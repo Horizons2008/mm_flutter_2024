@@ -38,9 +38,9 @@ class CommFunc {
     if (stat == "0") {
       coul = Colors.orange;
     } else if (stat == "1") {
-      coul = Colors.orange;
+      coul = Colors.black;
     } else if (stat == "2") {
-      coul = Colors.red;
+      coul = Colors.orange;
     } else {
       coul = Colors.green;
     }
@@ -55,9 +55,9 @@ class CommFunc {
     if (stat == "0") {
       label = "programme".tr;
     } else if (stat == "1")
-      label = "reporte".tr;
+      label = "Disponible".tr;
     else if (stat == "2")
-      label = "reporte".tr;
+      label = "en attente".tr;
     else
       label = "recouvre".tr;
 
@@ -190,17 +190,18 @@ class CommFunc {
     box.write('rest_id', uss.rest_id);
     box.write('rest_name', uss.rest_name);
     box.write('token', uss.token);
-    
+    box.write('role', uss.role);
   }
 
   //**************************************************************** */
-  static Utilisateur ReadSession11() {
+  static Utilisateur ReadSession() {
     final box = GetStorage();
 
     return Utilisateur(
       rest_name: box.read('rest_name') ?? "",
-      rest_id: box.read('rest_id'),
-      token: box.read('token'),
+      rest_id: box.read('rest_id') ?? -1,
+      token: box.read('token') ?? "",
+      role: box.read('role') ?? "",
     );
   }
 

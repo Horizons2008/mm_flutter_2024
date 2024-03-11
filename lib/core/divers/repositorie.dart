@@ -1,4 +1,5 @@
 import 'package:master_menu/core/divers/webservices.dart';
+import 'package:master_menu/model/commande.dart';
 import 'package:master_menu/model/repat.dart';
 
 class Reposit {
@@ -15,8 +16,13 @@ class Reposit {
   }
 
   //********************************** */
-  Future repSstoreTable(String name, int nbrChaise) async {
-    return await ws.wsStoreTable(name, nbrChaise);
+  Future repSstoreTable(int id, String name, int nbrChaise, bool status) async {
+    return await ws.wsStoreTable(id, name, nbrChaise, status);
+  }
+
+  //********************************** */
+  Future repDestroyTable(int id) async {
+    return await ws.wsDestroyTable(id);
   }
 
 //********************************** */
@@ -25,8 +31,14 @@ class Reposit {
   }
   //**************************************************** */
 
-  Future repStoreUser(String username, String password, int role) async {
-    return await ws.wsStoreUser(username, password, role);
+  Future repStoreUser(
+      int id, String username, String password, String role) async {
+    return await ws.wsStoreUser(id, username, password, role);
+  }
+  //**************************************************** */
+
+  Future repDestroyUser(int id) async {
+    return await ws.wsDestroyUser(id);
   }
 
   //********************************** */
@@ -35,8 +47,8 @@ class Reposit {
   }
   //**************************************************** */
 
-  Future repStoreCat(String title, String status, String photo) async {
-    return await ws.wsStoreCat(title, status, photo);
+  Future repStoreCat(int id,String title, String status, String photo) async {
+    return await ws.wsStoreCat(id,title, status, photo);
   }
   //**************************************************** */
 
@@ -191,6 +203,22 @@ class Reposit {
   //********************************** */
   Future rep_getConfig() async {
     return await ws.wsInitConfig();
+  }
+
+//********************************** */
+  Future rep_getCommandeByIdTable(int id) async {
+    return await ws.wsGetCommandeByTable(id);
+  }
+
+  //********************************** */
+  Future repStoreCommande(
+      int table_id, MCommande commande, List<int> listeDeleted) async {
+    return await ws.wsStoreCommande(table_id, commande, listeDeleted);
+  }
+
+  //********************************** */
+  Future repDeleteCommande(int id) async {
+    return await ws.wsDeleteCommande(id);
   }
 
 //---------------------------------------------------------------------------------------------------------------

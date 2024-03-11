@@ -18,7 +18,7 @@ class CtrlDetail extends GetxController {
   MVariant? selectedVariant;
 
   String state = "";
-  late MRepat repat =
+  MRepat repat =
       MRepat(id: -5, title: "", image: "", status: "", variants: [], catId: -1);
   int code = -1;
   List<MCat> listCat = [];
@@ -48,7 +48,7 @@ class CtrlDetail extends GetxController {
     await reposit.rep_getDetailRepat(id).then((value) => {
           print("detailll $value"),
           repat = MRepat.fromJson(value["detail"]),
-          selectedCat = value["detail"]["cat_id"],
+          selectedCat = value["detail"]["categorie_id"],
           getlistVariant(),
           tECTitleDetail.text = repat.title,
           state = "3",
@@ -205,11 +205,10 @@ class CtrlDetail extends GetxController {
   storeRepatVariant(int unite, int repat) {
     if (tECPrix.text.isEmpty) {
       CommFunc.showToast(content: "Montant vide non autorisé");
-    } 
-    
-   // else if(tryparse){}
-    
-    
+    }
+
+    // else if(tryparse){}
+
     else {
       reposit.repStoreRepatUnite(unite, repat, int.parse(tECPrix.text)).then(
             (value) => {

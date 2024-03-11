@@ -6,16 +6,27 @@ class MUser {
     required this.status,
     required this.username,
   });
-  late final String username;
+  late String username;
   late int id;
-  late final String role;
+  late String role;
   late String status;
   late String photos;
 
   MUser.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     username = json['username'];
-    role = json['role'];
+    switch (json['role']) {
+      case "S":
+        role = "Serveur";
+        break;
+      case "A":
+        role = "Admin";
+        break;
+      case "C":
+        role = "Caissier";
+        break;
+    }
+    ;
     status = json['status'];
     photos = json['photos'] ?? "";
   }

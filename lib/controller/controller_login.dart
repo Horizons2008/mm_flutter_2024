@@ -2,10 +2,12 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:master_menu/core/communFunctions.dart';
+import 'package:master_menu/core/constants.dart';
 import 'package:master_menu/core/divers/repositorie.dart';
 import 'package:master_menu/core/divers/webservices.dart';
 import 'package:master_menu/model/utilisateur.dart';
 import 'package:master_menu/screens/dashboard/screen_dashboard.dart';
+import 'package:master_menu/screens/server/home/screen_table.dart';
 
 class Ctrl_login extends GetxController {
   String username = "";
@@ -13,17 +15,12 @@ class Ctrl_login extends GetxController {
   String gmail = "";
   int hint_user = 0;
   int hint_pass = 0;
+  bool showPassword = false;
 
   String state_login = "";
   WebServices ws = WebServices();
   late Reposit reposit;
   bool savePassword = false;
-
-  Utilisateur user = Utilisateur(
-    rest_id: -1,
-    rest_name: "",
-    token: "",
-  );
 
   changeSavePassword() {
     savePassword = !savePassword;
@@ -85,16 +82,20 @@ class Ctrl_login extends GetxController {
                   {
                     state_login = "logged",
                     update(),
-                    user = Utilisateur.fromJson(value),
-                    await CommFunc.openSession(true, user),
-                    print("loggged"),
+                    user1 = Utilisateur.fromJson(value),
+                    //  user1 = user,
+                    await CommFunc.openSession(true, user1),
+
                     //  checkUpdate = await CommFunc.getInitConfig(),
 
                     //   if (checkUpdate == "not update")
-                   
-                      Future.delayed(Duration(seconds: 2)),
-                      Get.off(() => Dashboard()),
-                    
+
+                    Future.delayed(Duration(seconds: 1)),
+                    if (value["role"] == "A")
+                      {Get.off(() => Dashboard())}
+                    else if (value["role"] == "S")
+                      Get.off(() => DashboardServer()),
+
                     /*    else
                       {
                         //Get.off(() => DialogueUpdate(conf: checkUpdate))

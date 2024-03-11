@@ -14,6 +14,7 @@ class CtrlCat extends GetxController {
   List<MCat> listCat = [];
   List<MRepat> listeRepat = [];
   int last_record = 0;
+  int hintCat = 0;
   ScrollController scrollcontroller = ScrollController();
   int code = -1;
   String state = "";
@@ -76,6 +77,10 @@ class CtrlCat extends GetxController {
                 listCat = List.from(value["liste_categories"])
                     .map((e) => MCat.fromJson(e))
                     .toList(),
+                if (listCat.length > 0)
+                  {
+                    selectedCat = listCat[0],
+                  },
                 state = "loaded",
                 update(),
               }
@@ -89,16 +94,34 @@ class CtrlCat extends GetxController {
 
 //************************************************** */
   Future<void> storeCat() async {
-    reposit.repStoreCat(textEditContTitle.text, "1", "photos").then(
-          (value) => {
-            if (value["status"] == "1")
-              {
-                CommFunc.showToast(content: "Categorie inseré avec succés"),
-                Get.back(),
-                getlistCat(),
-              }
-          },
-        );
+    state = "loading";
+    update();
+    if (textEditContTitle.text.isEmpty) {
+      state = "loaded";
+      hintCat = 1;
+      update();
+    } else {
+      reposit
+          .repStoreCat(selectedCat.id, textEditContTitle.text, "1", "photos")
+          .then(
+            (value) => {
+              print("cc1 $value"),
+              state = "loaded",
+              if (value["status"] == 1)
+                {
+                  CommFunc.showToast(content: "Categorie inseré avec succés"),
+                  Get.back(),
+                  getlistCat(),
+                }
+              else if (value["status"] == 2)
+                {
+                  CommFunc.showToast(content: "Nom categorie deja existe"),
+                  hintCat = 3,
+                  update(),
+                }
+            },
+          );
+    }
   }
 
   //************************************************** */

@@ -1,19 +1,18 @@
 import 'package:get/get.dart';
-
-import 'dart:convert';
-
 import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 import 'package:master_menu/core/communFunctions.dart';
 import 'package:master_menu/core/divers/repositorie.dart';
 import 'package:master_menu/core/divers/webservices.dart';
 import 'package:master_menu/model/user.dart';
-import 'package:master_menu/model/table.dart';
 
 class CtrlUser extends GetxController {
   WebServices ws = WebServices();
   late Reposit reposit;
-  int selectedRole = 2;
+  List<String> Role = ["", "A", "S", "C"];
+  int selectedRole = 1;
+  int hintUsername = 0;
+  int hintPassword = 0;
+
   List<MUser> listUsers = [];
   int last_record = 0;
   ScrollController scrollcontroller = ScrollController();
@@ -21,6 +20,8 @@ class CtrlUser extends GetxController {
   String state = "";
   TextEditingController textEditContusername = TextEditingController();
   TextEditingController textEditContPass = TextEditingController();
+  MUser selectedUser =
+      MUser(id: -1, photos: "", role: "", status: "", username: "uui");
 
   @override
   void onInit() {
@@ -74,7 +75,6 @@ class CtrlUser extends GetxController {
             code = -1,
             if (value["status"] == 1)
               {
-                print("mappped"),
                 listUsers = List.from(value["liste_users"])
                     .map((e) => MUser.fromJson(e))
                     .toList(),
@@ -83,26 +83,53 @@ class CtrlUser extends GetxController {
               }
           });
     }
-
-    // list_partner = ctrl_home.listPartner;
-    //
     update();
+  }
+
+  //*************************************** */
+  Future deleteUser() async {
+    if (selectedUser.id == -1) {
+      CommFunc.showToast(content: "Vous devez selectiner un utilisateur");
+    } else {
+      reposit.repDestroyUser(selectedUser.id).then((value) => {
+            print("zza $value"),
+            if (value["status"] == 1)
+              {
+                CommFunc.showToast(
+                    content: "Utilisateur supprimé avec succées"),
+                getlistUsers(),
+              }
+          });
+    }
   }
 
 //************************************************** */
   Future<void> storeUser() async {
-    reposit
-        .repStoreUser(
-            textEditContusername.text, textEditContPass.text, selectedRole)
-        .then(
-          (value) => {
-            if (value["status"] == "1")
-              {
-                CommFunc.showToast(content: "Utilisateur inseré avec succés"),
-                Get.back(),
-                getlistUsers(),
-              }
-          },
-        );
+    if (textEditContusername.text.isEmpty) {
+      hintUsername = 1;
+      update();
+    } else if (textEditContPass.text.isEmpty) {
+      hintPassword = 1;
+      update();
+    } else {
+      reposit
+          .repStoreUser(selectedUser.id, textEditContusername.text,
+              textEditContPass.text, Role[selectedRole])
+          .then(
+            (value) => {
+              print("112 $value"),
+              if (value["status"] == 2)
+                {hintUsername = 3, update()}
+              else if (value["status"] == 1)
+                {
+                  textEditContPass.text = "",
+                  textEditContusername.text = "",
+                  CommFunc.showToast(content: "Utilisateur inseré avec succés"),
+                  Get.back(),
+                  getlistUsers(),
+                }
+            },
+          );
+    }
   }
 }

@@ -6,14 +6,14 @@ import 'package:get/state_manager.dart';
 import 'package:master_menu/core/commun%20widgets/custom_text.dart';
 import 'package:master_menu/core/constants.dart';
 
-class CustomButton extends StatelessWidget {
-  const CustomButton({
+class InactiveButton extends StatelessWidget {
+  const InactiveButton({
     super.key,
     required this.titre,
-    required this.onclick,
+   
   });
   final String titre;
-  final VoidCallback? onclick;
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +21,14 @@ class CustomButton extends StatelessWidget {
       width: double.infinity,
       height: 56.h,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: onclick == null ? grey8 : PrimaryColor),
+          borderRadius: BorderRadius.circular(10), color: PrimaryColor),
       child: ElevatedButton(
-        onPressed: onclick,
+        onPressed:(){} ,
         style: ElevatedButton.styleFrom(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          disabledBackgroundColor: grey8,
-          backgroundColor: PrimaryColor,
+          disabledBackgroundColor: grey3,
+          backgroundColor:Colors.grey ,
         ),
         child: CustomText(
             text: titre, size: 18.sp, weight: FontWeight.w600, coul: white),

@@ -20,13 +20,6 @@ class ScreenTable extends StatelessWidget {
             weight: FontWeight.w500,
             coul: black),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.to(() => AddTable());
-        },
-        child: CustomText(
-            text: " + ", size: 22, weight: FontWeight.w500, coul: black),
-      ),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
@@ -42,7 +35,6 @@ class ScreenTable extends StatelessWidget {
                 } else {
                   return Container();
                 }
-                
               }),
         ),
       ),

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/state_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:master_menu/controller/controller_cat.dart';
-import 'package:master_menu/controller/controller_user.dart';
 import 'package:master_menu/core/commun%20widgets/custom_button.dart';
 import 'package:master_menu/core/commun%20widgets/custom_edit.dart';
 import 'package:master_menu/core/commun%20widgets/custom_text.dart';
+import 'package:master_menu/core/commun%20widgets/hint_edit.dart';
 import 'package:master_menu/core/commun%20widgets/space_ver.dart';
 import 'package:master_menu/core/constants.dart';
 
@@ -24,51 +23,56 @@ class AddCat extends StatelessWidget {
             coul: black),
       ),
       body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          margin: const EdgeInsets.only(left: 10, right: 10, top: 15),
-          child: GetBuilder<CtrlCat>(
-              init: CtrlCat(),
-              builder: (val1) {
-                return Column(
-                  children: [
-                    CustomEdit(
-                      onChange: (v) {
-                        val1.textEditContTitle.text = v;
-                        val1.update();
-                      },
-                      hint: "Nom Categorie",
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        final ImagePicker picker = ImagePicker();
-// Pick an image.
-                        final XFile? image =
-                            await picker.pickImage(source: ImageSource.gallery);
-                      },
-                      child: Container(
-                        width: 250,
-                        height: 250,
-                        padding: EdgeInsets.all(50),
-                        margin: EdgeInsets.only(top: 25),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border:
-                                Border.all(color: PrimaryColor, width: 0.7)),
-                        child: Image.asset("assets/images/pic.png"),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Container(
+            margin: const EdgeInsets.only(left: 10, right: 10, top: 15),
+            child: GetBuilder<CtrlCat>(
+                init: CtrlCat(),
+                builder: (val1) {
+                  return Column(
+                    children: [
+                      CustomEdit(
+                        teController: val1.textEditContTitle,
+                        onChange: (v) {
+                          val1.textEditContTitle.text = v;
+                          val1.hintCat = 0;
+                          val1.update();
+                        },
+                        hint: "Nom Categorie",
                       ),
-                    ),
-                    const SpaceV(h: 30),
-                    const SpaceV(h: 20),
-                    CustomButton(
-                        titre: "Ajouter User",
-                        onclick: () {
-                          val1.storeCat();
-                        })
-                  ],
-                );
-              }),
+                      HintError(ind: val1.hintCat),
+                      InkWell(
+                        onTap: () async {
+                          final ImagePicker picker = ImagePicker();
+                          // Pick an image.
+                          final XFile? image = await picker.pickImage(
+                              source: ImageSource.gallery);
+                        },
+                        child: Container(
+                          width: 200,
+                          height: 200,
+                          padding: EdgeInsets.all(50),
+                          margin: EdgeInsets.only(top: 25),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border:
+                                  Border.all(color: PrimaryColor, width: 0.7)),
+                          child: Image.asset("assets/images/pic.png"),
+                        ),
+                      ),
+                      const SpaceV(h: 20),
+                      val1.state == "loading"
+                          ? CustomButton(titre: "Traitement", onclick: () {})
+                          : CustomButton(
+                              titre: "Ajouter Categorie",
+                              onclick: () {
+                                val1.storeCat();
+                              })
+                    ],
+                  );
+                }),
+          ),
         ),
       ),
     );

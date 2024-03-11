@@ -6,13 +6,12 @@ import 'package:get/get.dart';
 import 'package:master_menu/controller/controller_table.dart';
 import 'package:master_menu/core/commun%20widgets/custom_text.dart';
 import 'package:master_menu/core/commun%20widgets/pleaseWait.dart';
-import 'package:master_menu/core/commun%20widgets/space_hor.dart';
 import 'package:master_menu/core/constants.dart';
-import 'package:master_menu/screens/table/add_table.dart';
+import 'package:master_menu/screens/server/home/item_tables.dart';
 import 'package:master_menu/screens/table/item_tables.dart';
 
-class ListV_Tables extends StatelessWidget {
-  const ListV_Tables({super.key});
+class ListV_TablesServeur extends StatelessWidget {
+  const ListV_TablesServeur({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -50,64 +49,6 @@ class ListV_Tables extends StatelessWidget {
           } else {
             return Column(
               children: [
-                Row(
-                  children: [
-                    CustomText(
-                        text: "Categorie",
-                        size: 18,
-                        weight: FontWeight.bold,
-                        coul: black),
-                    Spacer(),
-                    CircleAvatar(
-                      backgroundColor: Colors.grey[200],
-                      child: IconButton(
-                          onPressed: () {
-                            val.DestroyTable();
-                          },
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.red,
-                          )),
-                    ),
-                    SpaceH(w: 10),
-                    CircleAvatar(
-                      backgroundColor: Colors.grey[200],
-                      child: IconButton(
-                          onPressed: () {
-                            val.textEditContNomTable.text =
-                                val.SelectedTableId.name;
-                            val.textEditContNbrChaise.text =
-                                val.SelectedTableId.nbr_chaise;
-
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const AddTable();
-                                });
-                          },
-                          icon: const Icon(
-                            Icons.edit,
-                            color: Colors.blue,
-                          )),
-                    ),
-                    const SpaceH(w: 10),
-                    CircleAvatar(
-                      backgroundColor: Colors.grey[200],
-                      child: IconButton(
-                          onPressed: () {
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const AddTable();
-                                });
-                          },
-                          icon: const Icon(
-                            Icons.add,
-                            color: Colors.green,
-                          )),
-                    ),
-                  ],
-                ),
                 Expanded(
                   child: SizedBox(
                     //width: double.infinity,
@@ -120,7 +61,7 @@ class ListV_Tables extends StatelessWidget {
 
                         // controller: val.scrollcontroller,
                         itemBuilder: (context, index) {
-                          return ItemTable(
+                          return ItemTableServeur(
                             item: val.list_tables[index],
                             index: index,
                           );

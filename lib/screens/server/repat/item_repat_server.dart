@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:master_menu/controller/controller_commande.dart';
 
 import 'package:master_menu/core/commun%20widgets/custom_text.dart';
 import 'package:master_menu/core/constants.dart';
 import 'package:master_menu/model/repat.dart';
-import 'package:master_menu/screens/details/screen_details.dart';
+import 'package:master_menu/screens/server/detail/screen_detail_server.dart';
 
-class ItemRepat extends StatelessWidget {
-  const ItemRepat({super.key, required this.item, required this.index});
+class ItemRepatServer extends StatelessWidget {
+  const ItemRepatServer({super.key, required this.item, required this.index});
   final MRepat item;
   final int index;
 
@@ -16,14 +17,14 @@ class ItemRepat extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        CtrlCommande ctrlCommande = Get.put(CtrlCommande());
+        ctrlCommande.getDetail(item.id);
         showModalBottomSheet(
-          
             context: context,
             builder: (BuildContext context) {
-              return ScreenDetail(id: item.id);
+              return DetailRepatServer12();
             });
-
-        //Get.to(() => ScreenDetail(id: item.id));
+        // Get.to(() => const DetailRepatServer());
       },
       child: Container(
         width: 200,
@@ -58,7 +59,7 @@ class ItemRepat extends StatelessWidget {
                                   weight: FontWeight.w600,
                                   coul: black),
                               CustomText(
-                                  text: "Nbr chaise: ${item.status}",
+                                  text: "Nbr xxxx: ${item.status}",
                                   size: 12,
                                   weight: FontWeight.w400,
                                   coul: black),
@@ -71,18 +72,6 @@ class ItemRepat extends StatelessWidget {
                 ],
               ),
             ),
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.edit,
-                  color: Colors.blue,
-                )),
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.delete,
-                  color: Colors.red,
-                ))
           ],
         ),
       ),

@@ -21,7 +21,7 @@ class MRepat {
     title = json['title'];
     image = json['image'];
     status = json['status'];
-    catId = json['cat_id'];
+    catId = json['categorie_id'];
     variants = List.from(json['variant'] ?? [])
         .map((e) => MVariant.fromJson(e))
         .toList();
@@ -33,7 +33,7 @@ class MRepat {
     _data['title'] = title;
     _data['image'] = image;
     _data['status'] = status;
-    _data['cat_id'] = catId;
+    _data['categorie_id'] = catId;
     _data['variant'] = variants.map((e) => e.toJson()).toList();
     return _data;
   }

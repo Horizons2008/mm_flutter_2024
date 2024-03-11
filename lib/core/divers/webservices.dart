@@ -9,6 +9,7 @@ import 'package:master_menu/core/communFunctions.dart';
 import 'package:master_menu/core/constants.dart';
 import 'package:master_menu/core/dio/dioException.dart';
 import 'package:master_menu/core/dio/intercepteur.dart';
+import 'package:master_menu/model/commande.dart';
 import 'package:master_menu/model/repat.dart';
 
 class WebServices {
@@ -84,12 +85,31 @@ class WebServices {
   }
 
   //*************************************** */
-  Future<dynamic> wsStoreTable(String nom, int nbrChaise) async {
+  Future<dynamic> wsStoreTable(
+      int id, String nom, int nbrChaise, bool status) async {
     String mapsUrl = "${baseUrl}addTable";
 
     try {
-      Response response = await dio
-          .post(mapsUrl, data: {"title": nom, "nbr_chaise": nbrChaise});
+      Response response = await dio.post(mapsUrl, data: {
+        "id": id,
+        "title": nom,
+        "nbr_chaise": nbrChaise,
+        "status": status
+      });
+
+      return response.data;
+    } on DioError catch (e) {
+      print(e.message);
+      return (<String, String>{"error": DioExceptions.fromDioError(e).message});
+    }
+  }
+
+  //*************************************** */
+  Future<dynamic> wsDestroyTable(int id) async {
+    String mapsUrl = "${baseUrl}deleteTable";
+
+    try {
+      Response response = await dio.post(mapsUrl, data: {"id": id});
 
       return response.data;
     } on DioError catch (e) {
@@ -113,12 +133,31 @@ class WebServices {
   }
 
   //*************************************** */
-  Future<dynamic> wsStoreUser(String username, String pass, int role) async {
+  Future<dynamic> wsStoreUser(
+      int id, String username, String pass, String role) async {
     String mapsUrl = "${baseUrl}CreateUser";
 
     try {
-      Response response = await dio.post(mapsUrl,
-          data: {"username": username, "password": pass, "role": role});
+      Response response = await dio.post(mapsUrl, data: {
+        "id": id,
+        "username": username,
+        "password": pass,
+        "role": role
+      });
+      return response.data;
+    } on DioError catch (e) {
+      print(e.message);
+      return (<String, String>{"error": DioExceptions.fromDioError(e).message});
+    }
+  }
+
+  //*************************************** */
+  Future<dynamic> wsDestroyUser(int id) async {
+    String mapsUrl = "${baseUrl}deleteUser";
+
+    try {
+      Response response = await dio.post(mapsUrl, data: {"id": id});
+
       return response.data;
     } on DioError catch (e) {
       print(e.message);
@@ -140,12 +179,13 @@ class WebServices {
   }
 
   //*************************************** */
-  Future<dynamic> wsStoreCat(String title, String status, String photo) async {
+  Future<dynamic> wsStoreCat(
+      int id, String title, String status, String photo) async {
     String mapsUrl = "${baseUrl}addCat";
 
     try {
       Response response = await dio.post(mapsUrl,
-          data: {"title": title, "status": status, "image": photo});
+          data: {"id": id, "title": title, "status": status, "image": photo});
       return response.data;
     } on DioError catch (e) {
       print(e.message);
@@ -198,7 +238,7 @@ class WebServices {
     String mapsUrl = "${baseUrl}showRepat";
     try {
       Response response =
-          await dio.post(mapsUrl, queryParameters: {"cat_id": idCat});
+          await dio.post(mapsUrl, queryParameters: {"cate_id": idCat});
 
       return response.data;
     } on DioError catch (e) {
@@ -303,6 +343,71 @@ class WebServices {
         "status": status,
         "prix": prix
       });
+      return response.data;
+    } on DioError catch (e) {
+      return (<String, String>{"error": DioExceptions.fromDioError(e).message});
+    }
+  }
+
+  //*************************************** */
+  Future<dynamic> wsLogout() async {
+    String checkUrl = "${baseUrl}logout";
+
+    try {
+      Response response = await dio.post(checkUrl);
+
+      return response.data;
+    } on DioError catch (e) {
+      return (<String, String>{"error": DioExceptions.fromDioError(e).message});
+    }
+  }
+
+//*************************************** */
+  Future<dynamic> wsGetCommandeByTable(int idTable) async {
+    String checkUrl = "${baseUrl}getCommandeOfTable";
+    // idTable = 3;
+
+    try {
+      Response response = await dio.post(checkUrl, data: {"table_id": idTable});
+
+      return response.data;
+    } on DioError catch (e) {
+      return (<String, String>{"error": DioExceptions.fromDioError(e).message});
+    }
+  }
+
+  //*************************************** */
+  Future<dynamic> wsStoreCommande(
+      int table_id, MCommande commande, List<int> listDeleted) async {
+    String checkUrl = "${baseUrl}addCommande";
+    // idTable = 3;
+    print("commande to json ${jsonEncode(commande.toJson())} ");
+
+    try {
+      Response response = await dio.post(checkUrl, data: {
+        "table_id": table_id,
+        "liste_deleted": listDeleted,
+        "commande": jsonEncode(commande.toJson())
+      });
+      print("112 ${response.data}");
+
+      return response.data;
+    } on DioError catch (e) {
+      return (<String, String>{"error": DioExceptions.fromDioError(e).message});
+    }
+  }
+
+  //*************************************** */
+  Future<dynamic> wsDeleteCommande(int commande_id) async {
+    String checkUrl = "${baseUrl}deleteCommande";
+    // idTable = 3;
+
+    try {
+      Response response = await dio.post(checkUrl, data: {
+        "id": commande_id,
+      });
+      print("112 ${response.data}");
+
       return response.data;
     } on DioError catch (e) {
       return (<String, String>{"error": DioExceptions.fromDioError(e).message});
@@ -516,19 +621,6 @@ class WebServices {
     String mapsUrl = "${baseUrl}utilisateurs/edit/${id}";
     try {
       Response response = await dio.get(mapsUrl, queryParameters: {});
-
-      return response.data;
-    } on DioError catch (e) {
-      return (<String, String>{"error": DioExceptions.fromDioError(e).message});
-    }
-  }
-
-//*************************************** */
-  Future<dynamic> wsLogout() async {
-    String checkUrl = "${baseUrl}logout";
-
-    try {
-      Response response = await dio.post(checkUrl);
 
       return response.data;
     } on DioError catch (e) {

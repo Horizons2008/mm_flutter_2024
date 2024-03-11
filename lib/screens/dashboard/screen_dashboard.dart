@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:master_menu/core/commun%20widgets/custom_text.dart';
+import 'package:master_menu/core/communFunctions.dart';
 import 'package:master_menu/core/constants.dart';
 import 'package:master_menu/screens/dashboard/drawer_menu.dart';
 
@@ -9,10 +10,11 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
-            text: "My restaurant",
+            text: user1.rest_name,
             size: 22,
             weight: FontWeight.w600,
             coul: black),

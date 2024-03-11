@@ -59,7 +59,18 @@ class ListV_Cat extends StatelessWidget {
                       CircleAvatar(
                         backgroundColor: Colors.grey[200],
                         child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              //val.selectedUser.username = "";
+                              val.textEditContTitle.text =
+                                  val.selectedCat.title;
+
+                              val.update();
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const AddCat();
+                                  });
+                            },
                             icon: Icon(
                               Icons.edit,
                               color: Colors.blue,
@@ -70,7 +81,16 @@ class ListV_Cat extends StatelessWidget {
                         backgroundColor: Colors.grey[200],
                         child: IconButton(
                             onPressed: () {
-                              Get.to(() => const AddCat());
+                              val.selectedCat.id = -1;
+                              //val.selectedUser.username = "";
+                              val.textEditContTitle.text = "";
+
+                              val.update();
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const AddCat();
+                                  });
                             },
                             icon: Icon(
                               Icons.add,

@@ -10,8 +10,18 @@ import 'package:master_menu/model/table.dart';
 class CtrlTable extends GetxController {
   WebServices ws = WebServices();
   late Reposit reposit;
+  bool status_table = false;
   List<MTable> list_tables = [];
   int last_record = 0;
+  int hint = 0;
+  int hint_chaise = 0;
+  MTable SelectedTableId = MTable(
+      id: -1,
+      name: "",
+      nbr_chaise: "0",
+      status: "0",
+      count_order: 0,
+      montant: 0);
   ScrollController scrollcontroller = ScrollController();
   int code = -1;
   String state = "";
@@ -60,7 +70,6 @@ class CtrlTable extends GetxController {
       update();
     }
 
-    
     if (await CommFunc.checkInternet() == false) {
       state = "noInternet";
       update();
@@ -74,11 +83,8 @@ class CtrlTable extends GetxController {
                 list_tables = List.from(value["liste_tables"])
                     .map((e) => MTable.fromJson(e))
                     .toList(),
-              
-                
                 state = "loaded",
                 update(),
-                
               }
           });
     }
@@ -90,20 +96,48 @@ class CtrlTable extends GetxController {
 
 //************************************************** */
   Future<void> storeTable() async {
-    reposit
-        .repSstoreTable(
-            textEditContNomTable.text, int.parse(textEditContNbrChaise.text))
-        .then(
-          (value) => {
-            print("1447 $value"),
-            if (value["status"] == "1")
-              {
-                print("1447 succed"),
-                CommFunc.showToast(content: "Table inserer avec succés"),
-                Get.back(),
-                getlistTable(),
-              }
-          },
-        );
+    if (int.tryParse(textEditContNbrChaise.text) == null) {
+      hint_chaise = 5;
+      update();
+    } else if (textEditContNomTable.text.isEmpty) {
+      hint = 1;
+      update();
+    } else {
+      reposit
+          .repSstoreTable(SelectedTableId.id, textEditContNomTable.text,
+              int.parse(textEditContNbrChaise.text), status_table)
+          .then(
+            (value) => {
+              SelectedTableId.id = -1,
+              textEditContNomTable.text = "",
+              textEditContNbrChaise.text = "0",
+              print("zzz $value"),
+              if (value["status"] == 1)
+                {
+                  CommFunc.showToast(content: "Table inserer avec succés"),
+                  Get.back(),
+                  getlistTable(),
+                }
+              else if (value["status"] == 2)
+                {
+                  hint = 3,
+                  state = "loaded",
+                  update(),
+                }
+            },
+          );
+    }
+  }
+
+  //**************************************** */
+  Future<void> DestroyTable() async {
+    reposit.repDestroyTable(SelectedTableId.id).then((value) => {
+          print("delete table ${value}"),
+          if (value["status"] == 1)
+            {
+              getlistTable(),
+              CommFunc.showToast(content: "Table suprimé avec succées"),
+            }
+        });
   }
 }

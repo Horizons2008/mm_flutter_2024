@@ -1,12 +1,15 @@
 // ignore_for_file: camel_case_types
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:master_menu/core/communFunctions.dart';
 import 'package:master_menu/core/constants.dart';
 import 'package:master_menu/core/divers/repositorie.dart';
 import 'package:master_menu/core/divers/webservices.dart';
 import 'package:master_menu/screens/dashboard/screen_dashboard.dart';
 import 'package:master_menu/screens/login/screenLogin.dart';
+import 'package:master_menu/screens/server/home/screen_table.dart';
 
 class Ctrl_Splash extends GetxController {
   @override
@@ -21,9 +24,19 @@ class Ctrl_Splash extends GetxController {
     super.onReady();
     final box = GetStorage();
     logged = await box.read("logged") ?? false;
+    if (logged == true) {
+      user1 = CommFunc.ReadSession();
+      debugPrint("rolle  ${user1.role}");
+    }
 
     Future.delayed(Duration(seconds: 1), () {
-      logged ? Get.offAll(Dashboard()) : Get.offAll(ScreenLogin());
+      logged
+          ? {
+              user1.role == "S"
+                  ? Get.offAll(DashboardServer())
+                  : Get.offAll(Dashboard())
+            }
+          : Get.offAll(ScreenLogin());
     });
   }
 

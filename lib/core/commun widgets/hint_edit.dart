@@ -13,8 +13,10 @@ class HintError extends StatelessWidget {
     else if (ind == 2)
       text = "short_field".tr;
     else if (ind == 3)
-      text = "username_used".tr;
-    else if (ind == 4) text = "username incorrect".tr;
+      text = "used".tr;
+    else if (ind == 4)
+      text = "username incorrect".tr;
+    else if (ind == 5) text = "valeur incorrect".tr;
 
     if (ind != 0)
       return Container(

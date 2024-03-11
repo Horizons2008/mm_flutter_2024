@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:master_menu/controller/controller_table.dart';
 import 'package:master_menu/core/commun%20widgets/custom_text.dart';
+import 'package:master_menu/core/communFunctions.dart';
 import 'package:master_menu/core/constants.dart';
 import 'package:master_menu/model/table.dart';
 
@@ -14,49 +15,57 @@ class ItemTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CtrlTable>(builder: (vvb) {
-      return Container(
-        width: 200,
-        margin: EdgeInsets.all(5),
-        padding: EdgeInsets.all(7),
-        decoration: BoxDecoration(
-          color: Colors.green,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Container(
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {},
-                  child: Container(
-                    width: double.infinity,
-                    height: 60.h,
-                    padding: EdgeInsets.only(left: 5, right: 5, top: 5),
-                    child: Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomText(
-                                text: item.name,
-                                size: 16,
-                                weight: FontWeight.w600,
-                                coul: white),
-                            CustomText(
-                                text: "Nbr chaise: ${item.nbr_chaise}",
-                                size: 12,
-                                weight: FontWeight.w400,
-                                coul: white),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+      return Material(
+        surfaceTintColor: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            vvb.SelectedTableId = item;
+            vvb.update();
+          },
+          child: Container(
+            margin: EdgeInsets.all(5),
+            padding: EdgeInsets.all(7),
+            decoration: BoxDecoration(
+              color: item == vvb.SelectedTableId ? grey8 : white,
+              border: Border.all(color: Colors.black),
+              borderRadius: BorderRadius.circular(12),
             ),
-          ],
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Spacer(),
+                    CustomText(
+                        text: "  ${CommFunc.LabelStatus(item.status)}  ",
+                        size: 12,
+                        weight: FontWeight.w500,
+                        coul: CommFunc.ColorStatus(item.status)),
+                    SizedBox(
+                      width: 10,
+                      height: 10,
+                      child: CircleAvatar(
+                        backgroundColor: CommFunc.ColorStatus(item.status),
+                      ),
+                    ),
+                  ],
+                ),
+                CustomText(
+                  text: item.name,
+                  size: 16,
+                  weight: FontWeight.w600,
+                  coul: item.id == vvb.SelectedTableId ? white : black,
+                ),
+                CustomText(
+                    text: item.montant != 0
+                        ? "Total : ${CommFunc.ToMoney(item.montant)} "
+                        : "",
+                    size: 14,
+                    weight: FontWeight.w400,
+                    coul: black),
+              ],
+            ),
+          ),
         ),
       );
     });

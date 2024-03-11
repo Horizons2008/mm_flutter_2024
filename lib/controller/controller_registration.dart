@@ -119,10 +119,7 @@ class Ctrl_Regis extends GetxController {
                   else if (value["status"] == 2)
                     {
                       hintRest = 3,
-                      //      user = Utilisateur.fromJson(value["client"]),
-                      //    CommFunc.openSession(true, user),
-                      //  ctrl.currentIndex = 0,
-                      //ctrl.update(),
+                     
                     }
                   else if (value["status"] == 3)
                     {
