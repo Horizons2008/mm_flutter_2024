@@ -6,7 +6,6 @@ import 'package:master_menu/core/divers/webservices.dart';
 import 'package:master_menu/model/cat.dart';
 import 'package:master_menu/model/repat.dart';
 import 'package:master_menu/model/variant.dart';
-import 'package:master_menu/screens/variant/item_variant.dart';
 
 class CtrlDetail extends GetxController {
   WebServices ws = WebServices();

@@ -160,6 +160,30 @@ class CtrlCat extends GetxController {
   }
 
   //************************************************************ */
+  Future<void> deleteRepat(int id) async {
+    reposit
+        .repDeleteRepat(
+          id,
+        )
+        .then(
+          (value) => {
+            if (value["status"] == 1)
+              {
+                CommFunc.showToast(content: "Repat supprimé avec succés"),
+                getlisteRepat(),
+              }
+
+            /*  if (value["status"] == "1")
+              {
+                CommFunc.showToast(content: "Categorie inseré avec succés"),
+                Get.back(),
+                getlistCat(),
+              }*/
+          },
+        );
+  }
+
+  //************************************************************ */
   Future<void> getlisteRepat() async {
     reposit
         .rep_getListeRepat(
@@ -167,14 +191,12 @@ class CtrlCat extends GetxController {
         )
         .then(
           (value) => {
-            print("liste repppat $value"),
             if (value["status"] == 1)
               {
                 listeRepat = List.from(value["liste_repats"])
                     .map((e) => MRepat.fromJson(e))
                     .toList(),
                 state = "loaded",
-                print("ttt succed ${listeRepat.length}"),
                 update(),
               }
           },

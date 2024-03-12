@@ -47,8 +47,8 @@ class Reposit {
   }
   //**************************************************** */
 
-  Future repStoreCat(int id,String title, String status, String photo) async {
-    return await ws.wsStoreCat(id,title, status, photo);
+  Future repStoreCat(int id, String title, String status, String photo) async {
+    return await ws.wsStoreCat(id, title, status, photo);
   }
   //**************************************************** */
 
@@ -87,6 +87,11 @@ class Reposit {
 //********************************** */
   Future rep_updateRepat(MRepat repat) async {
     return await ws.wsUpdateRepat(repat);
+  }
+
+  //********************************** */
+  Future repDeleteRepat(int id) async {
+    return await ws.wsDeleteRepat(id);
   }
 
   //********************************** */

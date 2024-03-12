@@ -292,6 +292,7 @@ class WebServices {
     }
   }
   //*************************************** */
+  // /deleteRepat
 
   Future<dynamic> wsDeleteRepatUnitet(
     int idRepatUnite,
@@ -302,6 +303,24 @@ class WebServices {
       Response response = await dio.post(mapsUrl, data: {
         "id": idRepatUnite,
       });
+      return response.data;
+    } on DioError catch (e) {
+      return (<String, String>{"error": DioExceptions.fromDioError(e).message});
+    }
+  }
+  //*************************************** */
+  // /
+
+  Future<dynamic> wsDeleteRepat(
+    int idRepatUnite,
+  ) async {
+    String mapsUrl = "${baseUrl}deleteRepat";
+
+    try {
+      Response response = await dio.post(mapsUrl, data: {
+        "id": idRepatUnite,
+      });
+      print("result delete repat ${response.data}");
       return response.data;
     } on DioError catch (e) {
       return (<String, String>{"error": DioExceptions.fromDioError(e).message});
