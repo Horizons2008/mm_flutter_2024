@@ -42,30 +42,36 @@ class ItemRepatServer extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(7),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SpaceV(h: 80),
-                      CustomText(
-                          text: item.title,
-                          size: 18,
-                          weight: FontWeight.w500,
-                          coul: black),
                       Row(
                         children: [
-                          CustomText(
-                              text: item.inOrder,
-                              size: 14,
-                              weight: FontWeight.w400,
-                              coul: black),
                           Expanded(
-                              child: Container(
-                            alignment: Alignment.bottomRight,
-                            child: CircleAvatar(
-                              backgroundColor: PrimaryColor.withOpacity(0.1),
-                              child: Icon(Icons.add_shopping_cart_sharp,
-                                  color: PrimaryColor),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                    text: item.title,
+                                    size: 18,
+                                    weight: FontWeight.w500,
+                                    coul: black),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25)),
+                                  child: CustomText(
+                                      text: item.inOrder,
+                                      size: 10,
+                                      weight: FontWeight.w400,
+                                      coul: black),
+                                ),
+                              ],
                             ),
-                          ))
+                          ),
+                          CircleAvatar(
+                            backgroundColor: PrimaryColor.withOpacity(0.1),
+                            child: Icon(Icons.add_shopping_cart_sharp,
+                                color: PrimaryColor),
+                          )
                         ],
                       ),
                     ],

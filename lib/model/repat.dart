@@ -13,11 +13,10 @@ class MRepat {
   late String title;
   late final String image;
   late final String status;
-  late  String inOrder;
-  
+  late String inOrder;
+
   late final int catId;
   late final List<MVariant> variants;
-
 
   MRepat.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -25,8 +24,8 @@ class MRepat {
     image = json['image'];
     status = json['status'];
     catId = json['categorie_id'];
-    inOrder = "deja Acheté";
-    
+    inOrder = "";
+
     variants = List.from(json['variant'] ?? [])
         .map((e) => MVariant.fromJson(e))
         .toList();

@@ -70,10 +70,15 @@ class CtrlCommande extends GetxController {
   Future<void> getCommande(int id) async {
     if (await reposit1.rep_getCommandeByIdTable(id) != null) {
       commande1 = reposit1.commande1;
-      update();
+      
+      
+      
+      
+      
+       update();
     }
 
-   /* await reposit.rep_getCommandeByIdTable(id).then((value) => {
+    /* await reposit.rep_getCommandeByIdTable(id).then((value) => {
           debugPrint("result commande: $value"),
           if (value["commande"] != null)
             commande1 = MCommande.fromJson(value["commande"]),

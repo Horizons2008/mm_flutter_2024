@@ -8,6 +8,7 @@ import 'package:master_menu/core/constants.dart';
 import 'package:master_menu/core/divers/repositorie.dart';
 import 'package:master_menu/core/divers/webservices.dart';
 import 'package:master_menu/model/cat.dart';
+import 'package:master_menu/model/commande.dart';
 import 'package:master_menu/model/repat.dart';
 
 class CtrlCat extends GetxController {
@@ -187,6 +188,23 @@ class CtrlCat extends GetxController {
         );
   }
 
+  //*********************************************************** */
+  Future checkInOrder() async {
+    MCommande commande = reposit1.commande1;
+    for (int i = 0; i < listeRepat.length; i++) {
+      for (int j = 0; j < listeRepat[i].variants.length; j++) {
+        var contain = commande.detail.where(
+            (element) => element.idRepatUnite == listeRepat[i].variants[j].id);
+
+        if (contain.isNotEmpty) {
+          listeRepat[i].inOrder =
+              "${contain.first.titleVariant} [${contain.first.qte}]";
+          update();
+        }
+      }
+    }
+  }
+
   //************************************************************ */
   Future<void> getlisteRepat() async {
     debugPrint("7718 ${jsonEncode(reposit1.commande1)}");
@@ -204,6 +222,7 @@ class CtrlCat extends GetxController {
                     .toList(),
                 state = "loaded",
                 update(),
+                checkInOrder(),
               }
           },
         );
