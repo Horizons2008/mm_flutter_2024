@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:master_menu/controller/controller_cat.dart';
 import 'package:master_menu/core/communFunctions.dart';
 import 'package:master_menu/core/divers/repositorie.dart';
 import 'package:master_menu/core/divers/webservices.dart';
@@ -15,6 +16,7 @@ class CtrlDetail extends GetxController {
   late Reposit reposit;
   int? selectedCat = -1;
   MVariant? selectedVariant;
+  List<int> deleted = [];
 
   String state = "";
   MRepat repat =
@@ -28,6 +30,7 @@ class CtrlDetail extends GetxController {
   List<DropdownMenuItem> itemsVariant = [
     DropdownMenuItem(
         value: MVariant(
+          idRepatVariant: -1,
           id: -22,
           title: "valeur initial",
           prix: 0,
@@ -37,7 +40,6 @@ class CtrlDetail extends GetxController {
   ];
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     reposit = Reposit(ws);
     getlistCat();
@@ -131,6 +133,7 @@ class CtrlDetail extends GetxController {
 
   //********************************************** */
   Future<void> updateRepat() async {
+    CtrlCat ctrl = Get.put(CtrlCat());
     if (state == "") {
       state = "loading";
       update();
@@ -141,11 +144,15 @@ class CtrlDetail extends GetxController {
       update();
       CommFunc.showToast(content: "NoInternet".tr);
     } else {
-      await reposit.rep_updateRepat(repat).then((value) => {
+      await reposit.repUpdateRepat(repat, deleted.toString()).then((value) => {
             code = -1,
-            print("rresult update repatttt  ${value}"),
-            /*     if (value["status"] == 1)
+            if (value["status"] == 1)
               {
+                CommFunc.showToast(content: "Repat Modifié avec succées"),
+                Get.back(),
+                ctrl.getlisteRepat(),
+              }
+            /* {
                 listeVariant = List.from(value["liste_variants"])
                     .map((e) => MVariant.fromJson(e))
                     .toList(),
@@ -179,6 +186,7 @@ class CtrlDetail extends GetxController {
     }
     if (index == -1) {
       repat.variants.add(MVariant(
+          idRepatVariant: -1,
           id: selectedVariant!.id,
           title: selectedVariant!.title,
           prix: int.parse(tECPrix.text),
@@ -189,19 +197,21 @@ class CtrlDetail extends GetxController {
   }
 
   //************************************************** */
-  deleteRepatVariant(int id) {
-    reposit.repDeleteRepatUnite(id).then(
+  deleteRepatVariant(MVariant item) {
+    if (item.idRepatVariant != -1) deleted.add(item.idRepatVariant);
+    update();
+/*reposit.repDeleteRepatUnite(item.id).then(
           (value) => {
             if (value["status"] == 1)
               CommFunc.showToast(content: "Variant supprimé avec succés")
           },
-        );
-    repat.variants.removeWhere((element) => element.id == id);
+        );*/
+    repat.variants.removeWhere((element) => element.id == item.id);
     update();
   }
 
   //************************************************** */
-  storeRepatVariant(int unite, int repat) {
+  storeRepatVariant(int unite, int idRepat) {
     if (tECPrix.text.isEmpty) {
       CommFunc.showToast(content: "Montant vide non autorisé");
     }
@@ -209,17 +219,37 @@ class CtrlDetail extends GetxController {
     // else if(tryparse){}
 
     else {
-      reposit.repStoreRepatUnite(unite, repat, int.parse(tECPrix.text)).then(
+      bool exist = false;
+
+      for (int j = 0; j < repat.variants.length; j++) {
+        if (repat.variants[j].id == unite) {
+          exist = true;
+        }
+      }
+      if (exist) {
+        CommFunc.showToast(content: "Variant existe choisit un Autre");
+      } else {
+        repat.variants.add(MVariant(
+            idRepatVariant: -1,
+            id: selectedVariant!.id,
+            status: "1",
+            prix: int.parse(tECPrix.text),
+            title: selectedVariant!.title));
+        update();
+        CommFunc.showToast(content: "Variant ajouté avec succés");
+        Get.back();
+      }
+
+      /*  reposit.repStoreRepatUnite(unite, idRepat, int.parse(tECPrix.text)).then(
             (value) => {
               if (value["status"] == 1)
                 CommFunc.showToast(content: "Variant Ajouté avec succés"),
-              CommFunc.showToast(content: "Variant inséré avec succés"),
               tECPrix.text = "",
               update(),
               Get.back(),
-              getDetail(repat),
+              getDetail(idRepat),
             },
-          );
+          );*/
     }
 
     update();
@@ -228,10 +258,16 @@ class CtrlDetail extends GetxController {
   //************************************************** */
   updateRepatVariant(
     String status,
-    int idRepatVariant,
+    MVariant item,
   ) {
-    reposit
-        .repUpdateRepatVariant(status, idRepatVariant, int.parse(tECPrix.text))
+    int index = repat.variants
+        .indexWhere((element) => element.idRepatVariant == item.idRepatVariant);
+    repat.variants[index].prix = int.parse(tECPrix.text);
+    update();
+    Get.back();
+
+    /* reposit
+        .repUpdateRepatVariant(status,item.idRepatVariant, int.parse(tECPrix.text))
         .then(
           (value) => {
             if (value["status"] == 1)
@@ -243,6 +279,6 @@ class CtrlDetail extends GetxController {
           },
         );
 
-    update();
+    update();*/
   }
 }

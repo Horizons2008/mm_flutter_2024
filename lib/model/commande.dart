@@ -35,6 +35,7 @@ class MDetail {
     required this.qte,
     required this.sousTotal,
     required this.id,
+    required this.idRepatUnite,
   });
   late int id;
 
@@ -43,6 +44,7 @@ class MDetail {
   late int prixRepat;
   late int qte;
   late int sousTotal;
+  late int idRepatUnite;
 
   MDetail.fromJson(Map<String, dynamic> json) {
     titleRepat = json['title_repat'];
@@ -51,6 +53,7 @@ class MDetail {
     qte = json['qte'];
     sousTotal = json['sous_total'];
     id = json['id'];
+    idRepatUnite = json['repat_variant_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -61,6 +64,7 @@ class MDetail {
     _data['qte'] = qte;
     _data['sous_total'] = sousTotal;
     _data['id'] = id;
+    _data['idRepatUnite'] = idRepatUnite;
 
     return _data;
   }

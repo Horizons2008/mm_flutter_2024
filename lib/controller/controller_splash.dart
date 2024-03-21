@@ -26,13 +26,13 @@ class Ctrl_Splash extends GetxController {
     logged = await box.read("logged") ?? false;
     if (logged == true) {
       user1 = CommFunc.ReadSession();
-      debugPrint("rolle  ${user1.role}");
+     
     }
 
     Future.delayed(Duration(seconds: 1), () {
       logged
           ? {
-              user1.role == "S"
+              user1.role == "Serveur"
                   ? Get.offAll(DashboardServer())
                   : Get.offAll(Dashboard())
             }

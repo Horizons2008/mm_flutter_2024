@@ -228,7 +228,31 @@ class WebServices {
           await dio.post(mapsUrl, data: {"cat_id": idCat, "title": title});
       return response.data;
     } on DioError catch (e) {
-      print(e.message);
+      return (<String, String>{"error": DioExceptions.fromDioError(e).message});
+    }
+  }
+
+  //*************************************** */
+  Future<dynamic> wsUpdateVariant(int idvariant, String title) async {
+    String mapsUrl = "${baseUrl}updateUnite";
+
+    try {
+      Response response =
+          await dio.post(mapsUrl, data: {"id": idvariant, "title": title});
+      return response.data;
+    } on DioError catch (e) {
+      return (<String, String>{"error": DioExceptions.fromDioError(e).message});
+    }
+  }
+
+  //*************************************** */
+  Future<dynamic> wsDestroyVariant(int idVariant) async {
+    String mapsUrl = "${baseUrl}deleteUnite";
+
+    try {
+      Response response = await dio.post(mapsUrl, data: {"id": idVariant});
+      return response.data;
+    } on DioError catch (e) {
       return (<String, String>{"error": DioExceptions.fromDioError(e).message});
     }
   }
@@ -275,17 +299,16 @@ class WebServices {
   }
   //*************************************** */
 
-  Future<dynamic> wsUpdateRepat(
-    MRepat repat,
-  ) async {
+  Future<dynamic> wsUpdateRepat(MRepat repat, String deleted) async {
+    print("deleted $deleted");
     String mapsUrl = "${baseUrl}updateRepat";
-
-    print("aaa ${repat.toJson()}");
 
     try {
       Response response = await dio.post(mapsUrl, data: {
         "repat": jsonEncode(repat.toJson()),
+        "deleted": deleted,
       });
+
       return response.data;
     } on DioError catch (e) {
       return (<String, String>{"error": DioExceptions.fromDioError(e).message});

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:master_menu/controller/controller_table.dart';
 import 'package:master_menu/core/communFunctions.dart';
+import 'package:master_menu/core/constants.dart';
 import 'package:master_menu/core/divers/repositorie.dart';
 import 'package:master_menu/core/divers/webservices.dart';
 import 'package:master_menu/model/commande.dart';
@@ -13,7 +14,8 @@ import 'package:master_menu/model/variant.dart';
 class CtrlCommande extends GetxController {
   WebServices ws = WebServices();
   late Reposit reposit;
-  MVariant selectedVariant = MVariant(id: -1, status: "1", prix: 0, title: "");
+  MVariant selectedVariant =
+      MVariant(idRepatVariant: -1, id: -1, status: "1", prix: 0, title: "");
   MCommande commande1 = MCommande(id: -1, total: 0, date: "", detail: []);
   String status = "";
   List<int> listeDeleted = [];
@@ -26,7 +28,8 @@ class CtrlCommande extends GetxController {
       titleVariant: "",
       prixRepat: 0,
       qte: 0,
-      sousTotal: 0);
+      sousTotal: 0,
+      idRepatUnite: 0);
 
   @override
   void onInit() {
@@ -65,12 +68,17 @@ class CtrlCommande extends GetxController {
   }
 
   Future<void> getCommande(int id) async {
-    await reposit.rep_getCommandeByIdTable(id).then((value) => {
+    if (await reposit1.rep_getCommandeByIdTable(id) != null) {
+      commande1 = reposit1.commande1;
+      update();
+    }
+
+   /* await reposit.rep_getCommandeByIdTable(id).then((value) => {
           debugPrint("result commande: $value"),
           if (value["commande"] != null)
             commande1 = MCommande.fromJson(value["commande"]),
         });
-    update();
+    update();*/
   }
 
   Future<void> deleteCommande() async {
@@ -108,18 +116,21 @@ class CtrlCommande extends GetxController {
   updateDetailCommande() {
     MDetail temp2 = temp;
     commande1.detail.add(MDetail(
-        id: temp2.id,
-        titleRepat: temp2.titleRepat,
-        titleVariant: temp2.titleVariant,
-        prixRepat: temp2.prixRepat,
-        qte: temp2.qte,
-        sousTotal: temp2.sousTotal));
+      id: temp2.id,
+      titleRepat: temp2.titleRepat,
+      titleVariant: temp2.titleVariant,
+      prixRepat: temp2.prixRepat,
+      qte: temp2.qte,
+      sousTotal: temp2.sousTotal,
+      idRepatUnite: temp2.idRepatUnite,
+    ));
     commande1.total = commande1.total + temp.sousTotal;
     update();
   }
 
   Future getDetail(int id) async {
     await reposit.rep_getDetailRepat(id).then((value) => {
+          debugPrint("aazz $value"),
           repat = MRepat.fromJson(value["detail"]),
           temp.titleRepat = repat.title,
           if (repat.variants.isNotEmpty)
@@ -129,6 +140,7 @@ class CtrlCommande extends GetxController {
               temp.prixRepat = repat.variants[0].prix,
               temp.qte = 1,
               temp.sousTotal = repat.variants[0].prix,
+              temp.idRepatUnite = repat.variants[0].idRepatVariant,
             },
           /*  selectedCat = value["detail"]["cat_id"],
           getlistVariant(),

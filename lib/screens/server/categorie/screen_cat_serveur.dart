@@ -14,16 +14,16 @@ class ScreenCatServer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*  appBar: AppBar(
         title: CustomText(
-            text: "Liste Categorie",
+            text: "Liste Categorie12",
             size: 18,
             weight: FontWeight.w500,
             coul: black),
-      ),
-      
+      ),*/
       body: SafeArea(
-        child: SizedBox(
+        child: Container(
+          padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
           width: double.infinity,
           //   height: double.infinity,
           // color: Colors.grey.shade100,

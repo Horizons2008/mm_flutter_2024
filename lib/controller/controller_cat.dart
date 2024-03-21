@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 
 import 'package:flutter/widgets.dart';
 import 'package:master_menu/core/communFunctions.dart';
+import 'package:master_menu/core/constants.dart';
 import 'package:master_menu/core/divers/repositorie.dart';
 import 'package:master_menu/core/divers/webservices.dart';
 import 'package:master_menu/model/cat.dart';
@@ -11,6 +14,7 @@ class CtrlCat extends GetxController {
   WebServices ws = WebServices();
   late Reposit reposit;
   MCat selectedCat = MCat(id: -1, image: "", title: "", status: "");
+
   List<MCat> listCat = [];
   List<MRepat> listeRepat = [];
   int last_record = 0;
@@ -80,6 +84,7 @@ class CtrlCat extends GetxController {
                 if (listCat.length > 0)
                   {
                     selectedCat = listCat[0],
+                    getlisteRepat(),
                   },
                 state = "loaded",
                 update(),
@@ -147,14 +152,13 @@ class CtrlCat extends GetxController {
         )
         .then(
           (value) => {
-            print("azzv ${value}"),
-
-            /*  if (value["status"] == "1")
+            if (value["status"] == "1")
               {
+                textEditContNewReapt.text = "",
+                update(),
                 CommFunc.showToast(content: "Categorie inseré avec succés"),
-                Get.back(),
                 getlistCat(),
-              }*/
+              }
           },
         );
   }
@@ -185,6 +189,7 @@ class CtrlCat extends GetxController {
 
   //************************************************************ */
   Future<void> getlisteRepat() async {
+    debugPrint("7718 ${jsonEncode(reposit1.commande1)}");
     reposit
         .rep_getListeRepat(
           selectedCat.id,
@@ -193,6 +198,7 @@ class CtrlCat extends GetxController {
           (value) => {
             if (value["status"] == 1)
               {
+                debugPrint("771 $value"),
                 listeRepat = List.from(value["liste_repats"])
                     .map((e) => MRepat.fromJson(e))
                     .toList(),

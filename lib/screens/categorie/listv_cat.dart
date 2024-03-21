@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:master_menu/controller/controller_cat.dart';
+import 'package:master_menu/core/commun%20widgets/btn_sm.dart';
+import 'package:master_menu/core/commun%20widgets/custom_button.dart';
 import 'package:master_menu/core/commun%20widgets/custom_edit.dart';
 import 'package:master_menu/core/commun%20widgets/custom_text.dart';
 import 'package:master_menu/core/commun%20widgets/pleaseWait.dart';
@@ -125,7 +127,7 @@ class ListV_Cat extends StatelessWidget {
                           coul: black),
                       TextButton(
                           onPressed: () {
-                            val.storeRepat();
+                          
                           },
                           child: const CustomText(
                               text: "Add Repat",
@@ -134,10 +136,25 @@ class ListV_Cat extends StatelessWidget {
                               coul: PrimaryColor))
                     ],
                   ),
-                  CustomEdit(
-                      hint: "Ajouter Repat ",
-                      teController: val.textEditContNewReapt,
-                      onChange: (text) {}),
+                  Row(
+                    children: [
+                      CustomEdit(
+                          hint: "Ajouter Repat ",
+                          teController: val.textEditContNewReapt,
+                          onChange: (text) {
+                            val.textEditContNewReapt.text = text;
+                            val.update();
+                          }),
+                      SpaceH(w: 5),
+                      val.textEditContNewReapt.text.isNotEmpty
+                          ? BtnSm(
+                              titre: "Ajouter +",
+                              onclick: () {
+                                 val.storeRepat();
+                              })
+                          : const SizedBox() //Upa457663    45757663
+                    ],
+                  ),
                   val.listeRepat.isNotEmpty
                       ? const Expanded(child: ListVRepat())
                       : const SizedBox()

@@ -19,7 +19,7 @@ class ScreenDetail extends StatelessWidget {
         return SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Container(
-            height: 300,
+            height: 450,
             padding: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,6 +41,8 @@ class ScreenDetail extends StatelessWidget {
                         coul: black),
                     ElevatedButton(
                         onPressed: () {
+                          val.tECPrix.text = "";
+                          val.update();
                           showModalBottomSheet(
                               backgroundColor: white,
                               context: context,
@@ -66,30 +68,90 @@ class ScreenDetail extends StatelessWidget {
                                                 weight: FontWeight.w400,
                                                 coul: black),
                                           ),
-                                          DropdownButton(
-                                              value: vel.selectedVariant,
-                                              isExpanded: true,
-                                              items: vel.itemsVariant,
-                                              onChanged: (va) {
-                                                vel.selectedVariant = va;
-
-                                                vel.update();
-
-                                                // val.getlistVariant();
-                                              }),
+                                          SpaceV(h: 40),
+                                          SizedBox(
+                                            height: 30,
+                                            child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount:
+                                                    vel.listeVariant.length,
+                                                itemBuilder: (context, index) =>
+                                                    InkWell(
+                                                        onTap: () {
+                                                          vel.selectedVariant =
+                                                              vel.listeVariant[
+                                                                  index];
+                                                          vel.update();
+                                                          //val1.getlistVariant();
+                                                        },
+                                                        child: Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 10),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 10,
+                                                                  right: 10),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  color: vel.selectedVariant ==
+                                                                          vel.listeVariant[
+                                                                              index]
+                                                                      ? Colors
+                                                                          .purple
+                                                                          .shade100
+                                                                      : white,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8),
+                                                                  border: Border
+                                                                      .all(
+                                                                    width: 1,
+                                                                    color: Colors
+                                                                        .purple,
+                                                                  )),
+                                                          child: CustomText(
+                                                              text: vel
+                                                                  .listeVariant[
+                                                                      index]
+                                                                  .title,
+                                                              size: 14,
+                                                              weight: FontWeight
+                                                                  .w600,
+                                                              coul: black),
+                                                        ))),
+                                          ),
+                                          const SpaceV(h: 15),
+                                          CustomText(
+                                              text: "Prix",
+                                              size: 15,
+                                              weight: FontWeight.w600,
+                                              coul: black),
+                                          const SpaceV(h: 5),
                                           CustomEdit(
                                             onChange: (cc) {},
                                             hint: "Prix",
+                                            dataType: TextInputType.number,
                                             teController: vel.tECPrix,
                                           ),
+                                          SpaceV(h: 25),
                                           CustomButton(
                                               titre: "valider",
-                                              onclick: () {
-                                                /// vel.updateVariant();
-                                                vel.storeRepatVariant(
-                                                    vel.selectedVariant!.id,
-                                                    vel.repat.id);
-                                              })
+                                              onclick: val.tECPrix.text.isEmpty
+                                                  ? null
+                                                  : () {
+                                                      /// vel.updateVariant();
+                                                      vel.storeRepatVariant(
+                                                          vel.selectedVariant!
+                                                              .id,
+                                                          vel.repat.id);
+                                                    })
                                         ],
                                       ),
                                     ),

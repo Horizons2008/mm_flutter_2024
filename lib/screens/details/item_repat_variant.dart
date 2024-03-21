@@ -22,9 +22,7 @@ class ItemRepatVariant extends StatelessWidget {
       child: Card(
           color: Colors.grey[100],
           surfaceTintColor: white,
-          child: Container(
-              //  padding: const EdgeInsets.all(5),
-              child: ListTile(
+          child: ListTile(
             title: CustomText(
                 text: " ${item.title} ",
                 size: 16,
@@ -40,13 +38,16 @@ class ItemRepatVariant extends StatelessWidget {
               children: <Widget>[
                 IconButton(
                     onPressed: () {
+                      CtrlDetail ctrl = Get.find();
+                      ctrl.tECPrix.text = item.prix.toString();
+                      ctrl.update();
                       showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) {
                             return GetBuilder<CtrlDetail>(builder: (va3) {
                               return Container(
                                 width: double.infinity,
-                                padding: EdgeInsets.only(
+                                padding: const EdgeInsets.only(
                                     top: 15, right: 10, left: 10),
                                 child: Column(
                                   children: [
@@ -59,13 +60,13 @@ class ItemRepatVariant extends StatelessWidget {
                                     CustomEdit(
                                       onChange: (val) {},
                                       teController: va3.tECPrix,
-                                      hint: "Nouveau prix",
+                                      hint: "Nouveau prix ${item.prix}",
                                     ),
-                                    SpaceV(h: 30),
+                                    const SpaceV(h: 30),
                                     CustomButton(
                                         titre: "Modifier",
                                         onclick: () {
-                                          va3.updateRepatVariant("1", item.id);
+                                          va3.updateRepatVariant("1", item);
                                         })
                                   ],
                                 ),
@@ -73,13 +74,13 @@ class ItemRepatVariant extends StatelessWidget {
                             });
                           });
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.edit,
                       color: Colors.blue,
                     )),
                 IconButton(
                     onPressed: () {
-                      ctrlDetail.deleteRepatVariant(item.id);
+                      ctrlDetail.deleteRepatVariant(item);
                     },
                     icon: const Icon(
                       Icons.delete_forever,
@@ -88,7 +89,7 @@ class ItemRepatVariant extends StatelessWidget {
                 // icon-2
               ],
             ),
-          ))),
+          )),
     );
   }
 }

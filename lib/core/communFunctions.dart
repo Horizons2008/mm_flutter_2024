@@ -181,12 +181,9 @@ class CommFunc {
   }
 
 //**************************************************************** */
-  static Future<void> openSession(bool Guest, Utilisateur uss) async {
-    print("open session   ");
+  static Future<void> openSession(Utilisateur uss) async {
     final box = GetStorage();
-
     box.write('logged', true);
-
     box.write('rest_id', uss.rest_id);
     box.write('rest_name', uss.rest_name);
     box.write('token', uss.token);
@@ -202,6 +199,7 @@ class CommFunc {
       rest_id: box.read('rest_id') ?? -1,
       token: box.read('token') ?? "",
       role: box.read('role') ?? "",
+      username: box.read('username') ?? "",
     );
   }
 

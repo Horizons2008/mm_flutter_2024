@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:master_menu/controller/controller_commande.dart';
+import 'package:master_menu/core/commun%20widgets/btn_sm.dart';
 import 'package:master_menu/core/commun%20widgets/custom_button.dart';
 import 'package:master_menu/core/commun%20widgets/custom_text.dart';
 import 'package:master_menu/core/commun%20widgets/space_ver.dart';
 import 'package:master_menu/core/communFunctions.dart';
 import 'package:master_menu/core/constants.dart';
-import 'package:master_menu/screens/server/detail/panelQte.dart';
+import 'package:master_menu/screens/server/detail/panel_qte.dart';
 
-class DetailRepatServer12 extends StatelessWidget {
-  const DetailRepatServer12({super.key});
+class DetailRepatServer extends StatelessWidget {
+  const DetailRepatServer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class DetailRepatServer12 extends StatelessWidget {
         body: GetBuilder<CtrlCommande>(builder: (val1) {
       return Container(
         width: double.infinity,
-        height: 280,
+        height: 200,
         margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,9 +50,9 @@ class DetailRepatServer12 extends StatelessWidget {
                 const PanelQte()
               ],
             ),
-            const SpaceV(h: 30),
+            const SpaceV(h: 10),
             SizedBox(
-              height: 50,
+              height: 40,
               child: ListView.builder(
                   itemCount: val1.repat.variants.length,
                   scrollDirection: Axis.horizontal,
@@ -68,7 +69,7 @@ class DetailRepatServer12 extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: val1.repat.variants[index].id ==
                                     val1.selectedVariant.id
-                                ? Colors.amber
+                                ? Colors.amber.shade100
                                 : Colors.white,
                             border: Border.all(color: Colors.grey, width: 1)),
                         child: Column(
@@ -91,18 +92,23 @@ class DetailRepatServer12 extends StatelessWidget {
                     );
                   }),
             ),
-            CustomText(
-                text: "Total ${val1.temp.sousTotal}",
-                size: 18,
-                weight: FontWeight.w600,
-                coul: black),
-            SpaceV(h: 30),
-            CustomButton(
-                titre: "Terminer",
-                onclick: () {
-                  val1.updateDetailCommande();
-                  Get.back();
-                })
+            SpaceV(h: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                    text: "Total ${val1.temp.sousTotal}",
+                    size: 18,
+                    weight: FontWeight.w600,
+                    coul: black),
+                BtnSm(
+                    titre: "Ajouter",
+                    onclick: () {
+                      val1.updateDetailCommande();
+                      Get.back();
+                    })
+              ],
+            ),
           ],
         ),
       );

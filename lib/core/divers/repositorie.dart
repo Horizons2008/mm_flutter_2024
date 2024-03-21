@@ -1,9 +1,13 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:master_menu/core/divers/webservices.dart';
 import 'package:master_menu/model/commande.dart';
 import 'package:master_menu/model/repat.dart';
 
 class Reposit {
   final WebServices ws;
+  MCommande commande1 = MCommande(id: -1, total: 0, date: "", detail: []);
 
   Reposit(this.ws);
   Future rep_getPortail() async {
@@ -63,10 +67,17 @@ class Reposit {
   //**************************************************** */
 
   Future repStoreVariant(int idCat, String title) async {
-    return await ws.wsStoreVariant(
-      idCat,
-      title,
-    );
+    return await ws.wsStoreVariant(idCat, title);
+  }
+  //**************************************************** */
+
+  Future repUpdateVariant(int idCat, String title) async {
+    return await ws.wsUpdateVariant(idCat, title);
+  }
+  //**************************************************** */
+
+  Future repDestroyVariant(int idVariant) async {
+    return await ws.wsDestroyVariant(idVariant);
   }
 
   //********************************** */
@@ -85,8 +96,8 @@ class Reposit {
   }
 
 //********************************** */
-  Future rep_updateRepat(MRepat repat) async {
-    return await ws.wsUpdateRepat(repat);
+  Future repUpdateRepat(MRepat repat, String deleted) async {
+    return await ws.wsUpdateRepat(repat, deleted);
   }
 
   //********************************** */
@@ -212,7 +223,13 @@ class Reposit {
 
 //********************************** */
   Future rep_getCommandeByIdTable(int id) async {
-    return await ws.wsGetCommandeByTable(id);
+    commande1 = MCommande(id: -1, total: 0, date: "", detail: []);
+
+    return await ws.wsGetCommandeByTable(id).then((value) => {
+          if (value["commande"] != null)
+            commande1 = MCommande.fromJson(value["commande"]),
+          debugPrint("771 commande1 ${jsonEncode(commande1)}"),
+        });
   }
 
   //********************************** */

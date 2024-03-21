@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:master_menu/controller/controller_commande.dart';
 
 import 'package:master_menu/core/commun%20widgets/custom_text.dart';
+import 'package:master_menu/core/commun%20widgets/space_ver.dart';
 import 'package:master_menu/core/constants.dart';
 import 'package:master_menu/model/repat.dart';
 import 'package:master_menu/screens/server/detail/screen_detail_server.dart';
@@ -20,60 +21,76 @@ class ItemRepatServer extends StatelessWidget {
         CtrlCommande ctrlCommande = Get.put(CtrlCommande());
         ctrlCommande.getDetail(item.id);
         showModalBottomSheet(
+            scrollControlDisabledMaxHeightRatio: 0.2,
             context: context,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             builder: (BuildContext context) {
-              return DetailRepatServer12();
+              return const DetailRepatServer();
             });
         // Get.to(() => const DetailRepatServer());
       },
-      child: Container(
-        width: 200,
-        margin: const EdgeInsets.all(5),
-        padding: const EdgeInsets.all(7),
-        decoration: BoxDecoration(
-          color: white,
-          border: Border.all(color: PrimaryColor, width: 0.5),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Material(
-                    color: Colors.transparent,
-                    child: Container(
-                      width: double.infinity,
-                      height: 60.h,
-                      padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
-                      child: Row(
+      child: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SpaceV(h: 50),
+              Card(
+                surfaceTintColor: white,
+                elevation: 10,
+                child: Container(
+                  padding: EdgeInsets.all(7),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SpaceV(h: 80),
+                      CustomText(
+                          text: item.title,
+                          size: 18,
+                          weight: FontWeight.w500,
+                          coul: black),
+                      Row(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                  text: item.title,
-                                  size: 16,
-                                  weight: FontWeight.w600,
-                                  coul: black),
-                              CustomText(
-                                  text: "Nbr xxxx: ${item.status}",
-                                  size: 12,
-                                  weight: FontWeight.w400,
-                                  coul: black),
-                            ],
-                          ),
+                          CustomText(
+                              text: item.inOrder,
+                              size: 14,
+                              weight: FontWeight.w400,
+                              coul: black),
+                          Expanded(
+                              child: Container(
+                            alignment: Alignment.bottomRight,
+                            child: CircleAvatar(
+                              backgroundColor: PrimaryColor.withOpacity(0.1),
+                              child: Icon(Icons.add_shopping_cart_sharp,
+                                  color: PrimaryColor),
+                            ),
+                          ))
                         ],
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
+            ],
+          ),
+          Container(
+            //  width: 100,
+            height: 100,
+            color: Colors.transparent,
+            alignment: Alignment.center,
+
+            child: Container(
+              height: 100,
+              width: 100,
+              decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    image: AssetImage("assets/images/12.png"),
+                  ),
+                  borderRadius: BorderRadius.circular(50)),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

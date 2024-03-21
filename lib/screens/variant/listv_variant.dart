@@ -5,6 +5,7 @@ import 'package:master_menu/controller/controller_cat.dart';
 import 'package:master_menu/controller/controller_variant.dart';
 import 'package:master_menu/core/commun%20widgets/custom_text.dart';
 import 'package:master_menu/core/constants.dart';
+import 'package:master_menu/screens/variant/item_variant.dart';
 
 class ListV_Variant extends StatelessWidget {
   const ListV_Variant({super.key});
@@ -38,11 +39,8 @@ class ListV_Variant extends StatelessWidget {
 
                         // controller: val.scrollcontroller,
                         itemBuilder: (context, index) {
-                          return CustomText(
-                              text: val.listeVariant[index].title,
-                              size: 14,
-                              weight: FontWeight.w500,
-                              coul: black);
+                          return ItemVariant1(
+                              item: val.listeVariant[index], index: index);
                         },
                       ),
                     ),

@@ -8,6 +8,7 @@ import 'package:master_menu/model/variant.dart';
 
 class CtrlVariant extends GetxController {
   WebServices ws = WebServices();
+  TextEditingController tECTitleUpdateVariant = TextEditingController();
   late Reposit reposit;
   int selectedCat = -1;
   List<MCat> listCat = [];
@@ -125,18 +126,58 @@ class CtrlVariant extends GetxController {
 
 //************************************************** */
   Future<void> storeVariant() async {
+    bool exist = false;
+    for (int i = 0; i < listeVariant.length; i++) {
+      if (listeVariant[i].title == textEditContVariant.text) {
+        exist = true;
+      }
+    }
+   
+    if (exist) {
+      CommFunc.showToast(content: "Variant existe deja ");
+    } else {
+      reposit
+          .repStoreVariant(selectedCat, textEditContVariant.text)
+          .then((value) => {
+                print("store variant 116 $value"),
+                if (value["status"] == "1")
+                  {
+                    CommFunc.showToast(content: "Categorie inseré avec succés"),
+                    textEditContVariant.text = "",
+                    update(),
+                    getlistVariant()
+                  }
+              });
+    }
+  }
+
+  //************************************************** */
+  Future<void> updateVariant(int id) async {
     reposit
-        .repStoreVariant(
-          selectedCat,
-          textEditContVariant.text,
+        .repUpdateVariant(
+          id,
+          tECTitleUpdateVariant.text,
         )
-        .then(
+        .then((value) => {
+              print("store variant 116 $value"),
+              if (value["status"] == 1)
+                {
+                  CommFunc.showToast(content: "Categorie inseré avec succés"),
+                  tECTitleUpdateVariant.text = "",
+                  update(),
+                  Get.back(),
+                  getlistVariant(),
+                }
+            });
+  }
+
+  //********************************************************************** */
+  Future<void> destroyVariant(int id) async {
+    reposit.repDestroyVariant(id).then(
           (value) => {
-            print("store variant 116 $value"),
-            if (value["status"] == "1")
+            if (value["status"] == 1)
               {
-                CommFunc.showToast(content: "Categorie inseré avec succés"),
-                textEditContVariant.text = "",
+                CommFunc.showToast(content: "Variant supprimé avec succés"),
                 update(),
                 getlistVariant(),
               }

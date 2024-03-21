@@ -20,13 +20,6 @@ class ScreenCat extends StatelessWidget {
             weight: FontWeight.w500,
             coul: black),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.to(() => const AddCat());
-        },
-        child: CustomText(
-            text: " + ", size: 22, weight: FontWeight.w500, coul: black),
-      ),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,

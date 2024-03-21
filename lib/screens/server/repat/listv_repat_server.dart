@@ -14,8 +14,7 @@ class ListVRepatServer extends StatelessWidget {
         init: CtrlCat(),
         builder: (val) {
           {
-            print("lllist repat ${val.listeRepat.length}");
-            return ListView.builder(
+            return GridView.builder(
               itemCount: val.listeRepat.length,
 
               // controller: val.scrollcontroller,
@@ -23,6 +22,11 @@ class ListVRepatServer extends StatelessWidget {
                 return ItemRepatServer(
                     item: val.listeRepat[index], index: index);
               },
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 15,
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.7),
             );
           }
         });

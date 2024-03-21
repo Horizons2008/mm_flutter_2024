@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -48,19 +49,7 @@ class Ctrl_login extends GetxController {
   //************************************************ */
   Future<void> checkLogin(String type, String name, String deviceId,
       String mail, String fb_token) async {
-    print("username $username  password $password");
-
-    final box = GetStorage();
     if (await CommFunc.checkInternet() == false)
-      /* ShowSnack(
-          0,
-          "Erreur".tr,
-          "NoInternet".tr,
-          Icon(
-            Icons.wifi_off,
-            size: 30,
-            color: white,
-          ));*/
       CommFunc.showToast(content: "NoInternet".tr);
     else if ((username == "") && (type == "user")) {
       hint_user = 1;
@@ -73,18 +62,19 @@ class Ctrl_login extends GetxController {
       update();
 
       reposit = Reposit(ws);
-      String checkUpdate = "";
+
       await reposit
           .rep_checkLogin(username, password, name, gmail, fb_token)
           .then((value) async => {
-                print("valllue   $value"),
                 if (value["status"] == 1)
                   {
+                    debugPrint("$value"),
                     state_login = "logged",
                     update(),
                     user1 = Utilisateur.fromJson(value),
+                    print("xxw ${user1}  ${user1.role}"),
                     //  user1 = user,
-                    await CommFunc.openSession(true, user1),
+                    await CommFunc.openSession(user1),
 
                     //  checkUpdate = await CommFunc.getInitConfig(),
 

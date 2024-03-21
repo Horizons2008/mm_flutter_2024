@@ -26,7 +26,7 @@ class MUser {
         role = "Caissier";
         break;
     }
-    ;
+    
     status = json['status'];
     photos = json['photos'] ?? "";
   }

@@ -9,7 +9,7 @@ class PanelQte extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double size = 40;
+    double size = 30;
     return GetBuilder<CtrlCommande>(builder: (ctrlVal) {
       return Row(
         children: [
@@ -21,7 +21,7 @@ class PanelQte extends StatelessWidget {
               alignment: Alignment.center,
               width: size,
               height: size,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(15),
                       bottomLeft: Radius.circular(15)),
@@ -34,11 +34,7 @@ class PanelQte extends StatelessWidget {
             width: size,
             height: size,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    bottomLeft: Radius.circular(15)),
-                color: white),
+            decoration: BoxDecoration(color: white),
             child: CustomText(
                 text: "${ctrlVal.temp.qte}",
                 size: 22,

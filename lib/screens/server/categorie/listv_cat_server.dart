@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:master_menu/controller/controller_cat.dart';
 import 'package:master_menu/core/commun%20widgets/custom_edit.dart';
 import 'package:master_menu/core/commun%20widgets/custom_text.dart';
+import 'package:master_menu/core/commun%20widgets/entete.dart';
 import 'package:master_menu/core/commun%20widgets/pleaseWait.dart';
 import 'package:master_menu/core/commun%20widgets/space_hor.dart';
 import 'package:master_menu/core/commun%20widgets/space_ver.dart';
@@ -38,9 +39,10 @@ class ListVCatServer extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const Entete(),
                   const SpaceV(h: 15),
                   SizedBox(
-                    height: 50,
+                    height: 35,
                     child: ListView.builder(
                       itemCount: val.listCat.length,
                       scrollDirection: Axis.horizontal,
