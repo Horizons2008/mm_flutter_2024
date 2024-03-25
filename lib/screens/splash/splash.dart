@@ -21,27 +21,15 @@ class Splash1 extends StatelessWidget {
                     width: double.infinity,
                     height: double.infinity,
                     clipBehavior: Clip.antiAlias,
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          //   Color(0x7F0FB4FF),
-                          Color(0xFFb7175f),
-                          Colors.white,
-
-                          Color(0xFFb7175f)
-                        ],
-                      ),
-                    ),
+                    decoration: const BoxDecoration(),
                     child: Center(
                       child: Container(
                         // margin: EdgeInsets.only(top: 300),
-                        width: 135,
-                        height: 115,
+                        width: 320,
+                        height: 320,
 
                         child: Image.asset(
-                          "assets/images/logo.png",
+                          "assets/images/Animation.gif",
                           fit: BoxFit.contain,
                         ),
                       ),

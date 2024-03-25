@@ -96,8 +96,8 @@ class Reposit {
   }
 
 //********************************** */
-  Future repUpdateRepat(MRepat repat, String deleted) async {
-    return await ws.wsUpdateRepat(repat, deleted);
+  Future repUpdateRepat(MRepat repat, String deleted,String photo) async {
+    return await ws.wsUpdateRepat(repat, deleted,photo);
   }
 
   //********************************** */
@@ -228,14 +228,18 @@ class Reposit {
     return await ws.wsGetCommandeByTable(id).then((value) => {
           if (value["commande"] != null)
             commande1 = MCommande.fromJson(value["commande"]),
-          debugPrint("771 commande1 ${jsonEncode(commande1)}"),
         });
   }
 
   //********************************** */
   Future repStoreCommande(
-      int table_id, MCommande commande, List<int> listeDeleted) async {
-    return await ws.wsStoreCommande(table_id, commande, listeDeleted);
+      int idTable, MCommande commande, List<int> listeDeleted) async {
+    return await ws.wsStoreCommande(idTable, commande, listeDeleted);
+  }
+
+  //********************************** */
+  Future repEncaissementCommande(int idCommande) async {
+    return await ws.wsEncaissement(idCommande);
   }
 
   //********************************** */

@@ -27,7 +27,7 @@ class ScreenVariant extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(() => const AddCat());
+          // Get.to(() => const AddCat());
         },
         child: CustomText(
             text: " + ", size: 22, weight: FontWeight.w500, coul: black),

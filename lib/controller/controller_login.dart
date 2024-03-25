@@ -72,7 +72,7 @@ class Ctrl_login extends GetxController {
                     state_login = "logged",
                     update(),
                     user1 = Utilisateur.fromJson(value),
-                    print("xxw ${user1}  ${user1.role}"),
+
                     //  user1 = user,
                     await CommFunc.openSession(user1),
 
@@ -80,11 +80,13 @@ class Ctrl_login extends GetxController {
 
                     //   if (checkUpdate == "not update")
 
-                    Future.delayed(Duration(seconds: 1)),
+                    Future.delayed(const Duration(seconds: 1)),
                     if (value["role"] == "A")
-                      {Get.off(() => Dashboard())}
+                      {Get.off(() => const Dashboard())}
                     else if (value["role"] == "S")
-                      Get.off(() => DashboardServer()),
+                      Get.off(() => const DashboardServer())
+                    else if (value["role"] == "C")
+                      Get.off(() => const DashboardServer()),
 
                     /*    else
                       {

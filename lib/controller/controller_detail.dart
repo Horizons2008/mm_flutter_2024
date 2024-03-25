@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:master_menu/controller/controller_cat.dart';
 import 'package:master_menu/core/communFunctions.dart';
 import 'package:master_menu/core/divers/repositorie.dart';
@@ -12,6 +15,7 @@ class CtrlDetail extends GetxController {
   WebServices ws = WebServices();
   TextEditingController tECTitleDetail = TextEditingController();
   TextEditingController tECPrix = TextEditingController();
+  File? image;
 
   late Reposit reposit;
   int? selectedCat = -1;
@@ -43,6 +47,14 @@ class CtrlDetail extends GetxController {
     super.onInit();
     reposit = Reposit(ws);
     getlistCat();
+  }
+
+  Future openGallery() async {
+    final ImagePicker picker = ImagePicker();
+    final img = await picker.pickImage(source: ImageSource.gallery);
+    if (img != null) image = File(img.path);
+
+    update();
   }
 
   Future getDetail(int id) async {
@@ -144,15 +156,19 @@ class CtrlDetail extends GetxController {
       update();
       CommFunc.showToast(content: "NoInternet".tr);
     } else {
-      await reposit.repUpdateRepat(repat, deleted.toString()).then((value) => {
-            code = -1,
-            if (value["status"] == 1)
-              {
-                CommFunc.showToast(content: "Repat Modifié avec succées"),
-                Get.back(),
-                ctrl.getlisteRepat(),
-              }
-            /* {
+      String photo = "";
+      image != null ? photo = image!.path : photo = "";
+      await reposit
+          .repUpdateRepat(repat, deleted.toString(), photo)
+          .then((value) => {
+                code = -1,
+                if (value["status"] == 1)
+                  {
+                    CommFunc.showToast(content: "Repat Modifié avec succées"),
+                    Get.back(),
+                    ctrl.getlisteRepat(),
+                  }
+                /* {
                 listeVariant = List.from(value["liste_variants"])
                     .map((e) => MVariant.fromJson(e))
                     .toList(),
@@ -166,7 +182,7 @@ class CtrlDetail extends GetxController {
                 update(),
               }
         */
-          });
+              });
     }
 
     // list_partner = ctrl_home.listPartner;

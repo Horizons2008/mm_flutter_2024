@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -57,7 +59,7 @@ class ListV_Cat extends StatelessWidget {
                               color: Colors.red,
                             )),
                       ),
-                      SpaceH(w: 10),
+                      const SpaceH(w: 10),
                       CircleAvatar(
                         backgroundColor: Colors.grey[200],
                         child: IconButton(
@@ -65,12 +67,20 @@ class ListV_Cat extends StatelessWidget {
                               //val.selectedUser.username = "";
                               val.textEditContTitle.text =
                                   val.selectedCat.title;
+                              val.image = null;
+
+                              /*  val.selectedCat.image != ""
+                                  ? val.image = File.fromUri(Uri.file(
+                                      "http://192.168.1.213/mm2023/public/photos/1711290660.png"))
+                                  : val.image = null;*/
 
                               val.update();
                               showModalBottomSheet(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return const AddCat();
+                                    return AddCat(
+                                      image_url: val.selectedCat.image,
+                                    );
                                   });
                             },
                             icon: Icon(
@@ -91,7 +101,9 @@ class ListV_Cat extends StatelessWidget {
                               showModalBottomSheet(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return const AddCat();
+                                    return const AddCat(
+                                      image_url: "",
+                                    );
                                   });
                             },
                             icon: Icon(
@@ -103,7 +115,7 @@ class ListV_Cat extends StatelessWidget {
                   ),
                   const SpaceV(h: 15),
                   SizedBox(
-                    height: 100,
+                    height: 40,
                     child: ListView.builder(
                       itemCount: val.listCat.length,
                       scrollDirection: Axis.horizontal,
@@ -126,9 +138,7 @@ class ListV_Cat extends StatelessWidget {
                           weight: FontWeight.bold,
                           coul: black),
                       TextButton(
-                          onPressed: () {
-                          
-                          },
+                          onPressed: () {},
                           child: const CustomText(
                               text: "Add Repat",
                               size: 16,
@@ -150,7 +160,7 @@ class ListV_Cat extends StatelessWidget {
                           ? BtnSm(
                               titre: "Ajouter +",
                               onclick: () {
-                                 val.storeRepat();
+                                val.storeRepat();
                               })
                           : const SizedBox() //Upa457663    45757663
                     ],

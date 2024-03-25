@@ -23,14 +23,17 @@ class DetailRepatServer extends StatelessWidget {
               coul: Colors.red),
         ),*/
         body: GetBuilder<CtrlCommande>(builder: (val1) {
-      return Container(
-        width: double.infinity,
-        height: 200,
-        margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /*   Container(
+      return val1.loading
+          ? Container()
+          : Container(
+              width: double.infinity,
+              padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(25)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /*   Container(
                 width: double.infinity,
                 height: 180,
                 color: Colors.amber,
@@ -39,79 +42,88 @@ class DetailRepatServer extends StatelessWidget {
                   fit: BoxFit.fill,
                 )),
             const SpaceV(h: 40),*/
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                    text: val1.repat.title,
-                    size: 22,
-                    weight: FontWeight.w600,
-                    coul: black),
-                const PanelQte()
-              ],
-            ),
-            const SpaceV(h: 10),
-            SizedBox(
-              height: 40,
-              child: ListView.builder(
-                  itemCount: val1.repat.variants.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        val1.selectedVariant = val1.repat.variants[index];
-                        val1.setSelectVariant(val1.repat.variants[index]);
-                        val1.update();
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 5, right: 5),
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        decoration: BoxDecoration(
-                            color: val1.repat.variants[index].id ==
-                                    val1.selectedVariant.id
-                                ? Colors.amber.shade100
-                                : Colors.white,
-                            border: Border.all(color: Colors.grey, width: 1)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            CustomText(
-                                text: val1.repat.variants[index].title,
-                                size: 14,
-                                weight: FontWeight.w400,
-                                coul: black),
-                            CustomText(
-                                text:
-                                    "${CommFunc.ToMoney(val1.repat.variants[index].prix)}",
-                                size: 12,
-                                weight: FontWeight.w400,
-                                coul: black),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-            ),
-            SpaceV(h: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                    text: "Total ${val1.temp.sousTotal}",
-                    size: 18,
-                    weight: FontWeight.w600,
-                    coul: black),
-                BtnSm(
-                    titre: "Ajouter",
-                    onclick: () {
-                      val1.updateDetailCommande();
-                      Get.back();
-                    })
-              ],
-            ),
-          ],
-        ),
-      );
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: val1.repat.title,
+                          size: 22,
+                          weight: FontWeight.w600,
+                          coul: black),
+                      const PanelQte()
+                    ],
+                  ),
+                  const SpaceV(h: 10),
+                  SizedBox(
+                    height: 35,
+                    child: ListView.builder(
+                        itemCount: val1.repat.variants.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              val1.selectedVariant = val1.repat.variants[index];
+                              val1.setSelectVariant(val1.repat.variants[index]);
+                              val1.update();
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 5, right: 5),
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              decoration: BoxDecoration(
+                                  color: val1.repat.variants[index].id ==
+                                          val1.selectedVariant.id
+                                      ? Colors.amber.shade100
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border:
+                                      Border.all(color: Colors.grey, width: 1)),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  CustomText(
+                                      text: val1.repat.variants[index].title,
+                                      size: 12,
+                                      weight: FontWeight.w600,
+                                      coul: black),
+                                  CustomText(
+                                      text:
+                                          "${CommFunc.ToMoney(val1.repat.variants[index].prix)}",
+                                      size: 10,
+                                      weight: FontWeight.w400,
+                                      coul: black),
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
+                  ),
+                  SpaceV(h: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: val1.repat.variants.isEmpty
+                              ? "--"
+                              : "${CommFunc.ToMoney(val1.temp.sousTotal)}",
+                          size: 22,
+                          weight: FontWeight.w600,
+                          coul: black),
+                      BtnSm(
+                          titre: "Ajouter",
+                          onclick: val1.repat.variants.isEmpty
+                              ? null
+                              : () {
+                                  val1.updateDetailCommande();
+                                  Get.back();
+                                })
+                    ],
+                  ),
+                ],
+              ),
+            );
     }));
   }
 }

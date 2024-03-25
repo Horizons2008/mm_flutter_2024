@@ -44,6 +44,7 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   firebase_auth: ^4.6.3
   device_info: any
+  
   url_launcher: any
   fluttertoast:
   share_plus:
@@ -67,6 +68,7 @@ dependencies:
   flutter_facebook_auth: ^6.0.3
   flutter_localizations:
     sdk: flutter
+  cached_network_image: ^3.3.1
 
 dev_dependencies:
   flutter_test:

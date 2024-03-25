@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:master_menu/core/constants.dart';
 
 class CustomInterceptor extends Interceptor {
   @override
@@ -12,7 +13,11 @@ class CustomInterceptor extends Interceptor {
       options.headers["Authorization"] = "Bearer $token";
     }
 
-    options.headers["Content-Type"] = "application/json";
+    typeRequest == 1
+        ? options.headers["Content-Type"] = "multipart/form-data"
+        : options.headers["Content-Type"] = "application/json";
+    // options.headers["Content-Type"] = "multipart/form-data";
+
     options.headers["Accept"] = "application/json";
 
     print("option header ${options.headers}");

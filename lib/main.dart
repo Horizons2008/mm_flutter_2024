@@ -7,6 +7,7 @@ import 'package:master_menu/screens/splash/splash.dart';
 void main() async {
   await GetStorage.init();
 
+  int typeRequ = 0;
   runApp(const MyApp());
 }
 

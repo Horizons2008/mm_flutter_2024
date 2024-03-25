@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:master_menu/controller/controller_cat.dart';
 import 'package:master_menu/controller/controller_table.dart';
 import 'package:master_menu/core/communFunctions.dart';
 import 'package:master_menu/core/constants.dart';
@@ -18,6 +20,7 @@ class CtrlCommande extends GetxController {
       MVariant(idRepatVariant: -1, id: -1, status: "1", prix: 0, title: "");
   MCommande commande1 = MCommande(id: -1, total: 0, date: "", detail: []);
   String status = "";
+  bool loading = false;
   List<int> listeDeleted = [];
   CtrlTable ctrlTable = Get.put(CtrlTable());
   MRepat repat =
@@ -70,12 +73,8 @@ class CtrlCommande extends GetxController {
   Future<void> getCommande(int id) async {
     if (await reposit1.rep_getCommandeByIdTable(id) != null) {
       commande1 = reposit1.commande1;
-      
-      
-      
-      
-      
-       update();
+
+      update();
     }
 
     /* await reposit.rep_getCommandeByIdTable(id).then((value) => {
@@ -100,6 +99,7 @@ class CtrlCommande extends GetxController {
   setSelectVariant(MVariant variant) {
     temp.titleVariant = variant.title;
     temp.prixRepat = variant.prix;
+    temp.idRepatUnite = variant.idRepatVariant;
 
     temp.sousTotal = variant.prix * temp.qte;
     update();
@@ -118,24 +118,58 @@ class CtrlCommande extends GetxController {
     update();
   }
 
+  Future enCaissement() async {
+    CtrlTable ctrl = Get.find();
+    await reposit1
+        .repEncaissementCommande(reposit1.commande1.id)
+        .then((value) => {
+              if (value["status"] == 1)
+                {
+                  CommFunc.showToast(
+                      content: "Encaissement effectué avec succés"),
+                  ctrl.getlistTable(),
+                  Get.back(),
+                }
+            });
+  }
+
+  //-------------------------------------------------------------
   updateDetailCommande() {
     MDetail temp2 = temp;
-    commande1.detail.add(MDetail(
-      id: temp2.id,
-      titleRepat: temp2.titleRepat,
-      titleVariant: temp2.titleVariant,
-      prixRepat: temp2.prixRepat,
-      qte: temp2.qte,
-      sousTotal: temp2.sousTotal,
-      idRepatUnite: temp2.idRepatUnite,
-    ));
-    commande1.total = commande1.total + temp.sousTotal;
-    update();
+    // debugPrint("1190 ${jsonEncode(temp2)} ");
+    // debugPrint("119055 ${jsonEncode(commande1)} ");
+
+    var contain = commande1.detail
+        .where((element) => element.idRepatUnite == temp2.idRepatUnite);
+    if (contain.isEmpty) {
+      commande1.detail.add(MDetail(
+        id: temp2.id,
+        titleRepat: temp2.titleRepat,
+        titleVariant: temp2.titleVariant,
+        prixRepat: temp2.prixRepat,
+        qte: temp2.qte,
+        sousTotal: temp2.sousTotal,
+        idRepatUnite: temp2.idRepatUnite,
+      ));
+      commande1.total = commande1.total + temp.sousTotal;
+      update();
+      CtrlCat controller = Get.find();
+      controller.checkInOrder();
+    } else {
+      commande1.total = commande1.total - contain.first.sousTotal;
+      contain.first.qte = temp2.qte;
+      contain.first.sousTotal = temp2.qte * temp2.prixRepat;
+      commande1.total = commande1.total + contain.first.sousTotal;
+
+      update();
+    }
   }
 
   Future getDetail(int id) async {
+    loading = true;
+    update();
     await reposit.rep_getDetailRepat(id).then((value) => {
-          debugPrint("aazz $value"),
+          loading = false,
           repat = MRepat.fromJson(value["detail"]),
           temp.titleRepat = repat.title,
           if (repat.variants.isNotEmpty)

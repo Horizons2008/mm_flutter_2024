@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:get/get.dart';
 
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:master_menu/core/communFunctions.dart';
 import 'package:master_menu/core/constants.dart';
 import 'package:master_menu/core/divers/repositorie.dart';
@@ -14,6 +16,7 @@ import 'package:master_menu/model/repat.dart';
 class CtrlCat extends GetxController {
   WebServices ws = WebServices();
   late Reposit reposit;
+  File? image;
   MCat selectedCat = MCat(id: -1, image: "", title: "", status: "");
 
   List<MCat> listCat = [];
@@ -46,6 +49,14 @@ class CtrlCat extends GetxController {
   void onReady() {
     // TODO: implement onReady
     super.onReady();
+  }
+
+  Future openGallery() async {
+    final ImagePicker picker = ImagePicker();
+    final img = await picker.pickImage(source: ImageSource.gallery);
+    if (img != null) image = File(img.path);
+
+    update();
   }
 
   //***************************************** */
@@ -108,7 +119,8 @@ class CtrlCat extends GetxController {
       update();
     } else {
       reposit
-          .repStoreCat(selectedCat.id, textEditContTitle.text, "1", "photos")
+          .repStoreCat(selectedCat.id, textEditContTitle.text, "1",
+              image != null ? image!.path : "")
           .then(
             (value) => {
               print("cc1 $value"),

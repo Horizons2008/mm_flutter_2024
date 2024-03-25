@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,14 +11,15 @@ import 'package:master_menu/core/commun%20widgets/space_ver.dart';
 import 'package:master_menu/core/constants.dart';
 
 class AddCat extends StatelessWidget {
-  const AddCat({super.key});
+  const AddCat({super.key, required this.image_url});
+  final String image_url;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
-            text: "Nouveau Categorie",
+            text: "Nouveau Categorie ",
             size: 16,
             weight: FontWeight.bold,
             coul: black),
@@ -44,21 +46,26 @@ class AddCat extends StatelessWidget {
                       HintError(ind: val1.hintCat),
                       InkWell(
                         onTap: () async {
-                          final ImagePicker picker = ImagePicker();
-                          // Pick an image.
-                          final XFile? image = await picker.pickImage(
-                              source: ImageSource.gallery);
+                          val1.openGallery();
                         },
                         child: Container(
                           width: 200,
                           height: 200,
-                          padding: EdgeInsets.all(50),
+                          padding: EdgeInsets.all(20),
                           margin: EdgeInsets.only(top: 25),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               border:
                                   Border.all(color: PrimaryColor, width: 0.7)),
-                          child: Image.asset("assets/images/pic.png"),
+                          child: val1.image != null
+                              ? Image.file(
+                                  val1.image!,
+                                  fit: BoxFit.fill,
+                                )
+                              : image_url.isNotEmpty
+                                  ? CachedNetworkImage(
+                                      imageUrl: baseUrl_photos + image_url)
+                                  : Image.asset("assets/images/pic.png"),
                         ),
                       ),
                       const SpaceV(h: 20),

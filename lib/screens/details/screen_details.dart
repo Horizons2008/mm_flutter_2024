@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:master_menu/controller/controller_detail.dart';
@@ -19,8 +20,8 @@ class ScreenDetail extends StatelessWidget {
         return SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Container(
-            height: 450,
             padding: const EdgeInsets.all(10),
+            height: 600,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -31,6 +32,34 @@ class ScreenDetail extends StatelessWidget {
                       val.update();
                     }),
                 const SpaceV(h: 10),
+                CustomText(
+                    text: "Image",
+                    size: 16,
+                    weight: FontWeight.bold,
+                    coul: black),
+                InkWell(
+                  onTap: () async {
+                    val.openGallery();
+                  },
+                  child: Container(
+                    width: 150,
+                    height: 150,
+                    padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.only(top: 25),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: PrimaryColor, width: 0.7)),
+                    child: val.image != null
+                        ? Image.file(
+                            val.image!,
+                            fit: BoxFit.fill,
+                          )
+                        : val.repat.image.isNotEmpty
+                            ? CachedNetworkImage(
+                                imageUrl: baseUrl_photos + val.repat.image)
+                            : Image.asset("assets/images/pic.png"),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

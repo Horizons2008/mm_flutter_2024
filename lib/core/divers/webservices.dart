@@ -182,13 +182,28 @@ class WebServices {
   Future<dynamic> wsStoreCat(
       int id, String title, String status, String photo) async {
     String mapsUrl = "${baseUrl}addCat";
+    typeRequest = 1;
+
+    FormData formData = FormData.fromMap(
+        {"id": id, "title": title, "status": status, "image": photo});
+    if (photo.isNotEmpty) {
+      formData.files.add(MapEntry(
+        "file",
+        await MultipartFile.fromFile(
+          photo,
+          filename: 'image.jpg',
+
+          // Set filename as you wish
+        ),
+      ));
+    }
 
     try {
-      Response response = await dio.post(mapsUrl,
-          data: {"id": id, "title": title, "status": status, "image": photo});
+      Response response = await dio.post(mapsUrl, data: formData);
+      typeRequest = 0;
+      print("144 ${response.data}");
       return response.data;
     } on DioError catch (e) {
-      print(e.message);
       return (<String, String>{"error": DioExceptions.fromDioError(e).message});
     }
   }
@@ -275,8 +290,8 @@ class WebServices {
     String mapsUrl = "${baseUrl}addRepat";
 
     try {
-      Response response = await dio.post(mapsUrl,
-          data: {"cat_id": idCat, "title": title, "image": "photos"});
+      Response response = await dio
+          .post(mapsUrl, data: {"cat_id": idCat, "title": title, "image": ""});
       return response.data;
     } on DioError catch (e) {
       return (<String, String>{"error": DioExceptions.fromDioError(e).message});
@@ -299,15 +314,33 @@ class WebServices {
   }
   //*************************************** */
 
-  Future<dynamic> wsUpdateRepat(MRepat repat, String deleted) async {
-    print("deleted $deleted");
+  Future<dynamic> wsUpdateRepat(
+      MRepat repat, String deleted, String photo) async {
+    print("deleted ${repat.toJson()}");
     String mapsUrl = "${baseUrl}updateRepat";
+    typeRequest = 1;
+
+    FormData formData = FormData.fromMap({
+      "repat": jsonEncode(repat.toJson()),
+      "deleted": deleted,
+    });
+    print("zzz $photo");
+    if (photo.isNotEmpty) {
+      formData.files.add(MapEntry(
+        "file",
+        await MultipartFile.fromFile(
+          photo,
+          filename: 'image.jpg',
+
+          // Set filename as you wish
+        ),
+      ));
+    }
 
     try {
-      Response response = await dio.post(mapsUrl, data: {
-        "repat": jsonEncode(repat.toJson()),
-        "deleted": deleted,
-      });
+      Response response = await dio.post(mapsUrl, data: formData);
+      typeRequest = 0;
+      print("zzz ${response.data}");
 
       return response.data;
     } on DioError catch (e) {
@@ -433,6 +466,17 @@ class WebServices {
       });
       print("112 ${response.data}");
 
+      return response.data;
+    } on DioError catch (e) {
+      return (<String, String>{"error": DioExceptions.fromDioError(e).message});
+    }
+  }
+
+  //*************************************** */
+  Future<dynamic> wsEncaissement(int idCommande) async {
+    String checkUrl = "${baseUrl}encaissierCommande";
+    try {
+      Response response = await dio.post(checkUrl, data: {"id": idCommande});
       return response.data;
     } on DioError catch (e) {
       return (<String, String>{"error": DioExceptions.fromDioError(e).message});

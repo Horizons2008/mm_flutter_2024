@@ -26,17 +26,17 @@ class Ctrl_Splash extends GetxController {
     logged = await box.read("logged") ?? false;
     if (logged == true) {
       user1 = CommFunc.ReadSession();
-     
+      print(user1.role);
     }
 
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 2200), () {
       logged
           ? {
-              user1.role == "Serveur"
-                  ? Get.offAll(DashboardServer())
-                  : Get.offAll(Dashboard())
+              user1.role == "Admin"
+                  ? Get.offAll(const Dashboard())
+                  : Get.offAll(const DashboardServer())
             }
-          : Get.offAll(ScreenLogin());
+          : Get.offAll(const ScreenLogin());
     });
   }
 

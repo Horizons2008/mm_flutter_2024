@@ -36,8 +36,14 @@ class Entete extends StatelessWidget {
             decoration: BoxDecoration(
                 border: Border.all(width: 1, color: Colors.grey),
                 borderRadius: const BorderRadius.all(Radius.circular(50)),
-                image: const DecorationImage(
-                    image: AssetImage("assets/images/logo_serveur1.jpg"),
+                image: DecorationImage(
+                    image: user1.role == "Serveur"
+                        ? const AssetImage("assets/images/logo_serveur1.jpg")
+                        : user1.role == "Caissier"
+                            ? const AssetImage(
+                                "assets/images/logo_caissier.png")
+                            : const AssetImage(
+                                "assets/images/logo_serveur1.jpg"),
                     fit: BoxFit.fill)),
           )
         ],

@@ -21,12 +21,15 @@ class ItemRepatServer extends StatelessWidget {
         CtrlCommande ctrlCommande = Get.put(CtrlCommande());
         ctrlCommande.getDetail(item.id);
         showModalBottomSheet(
-            scrollControlDisabledMaxHeightRatio: 0.2,
+            backgroundColor: Colors.transparent,
+            scrollControlDisabledMaxHeightRatio: 0.25,
+            shape: const RoundedRectangleBorder(
+              // <-- SEE HERE
+              borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
+            ),
             context: context,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             builder: (BuildContext context) {
-              return const DetailRepatServer();
+              return  DetailRepatServer();
             });
         // Get.to(() => const DetailRepatServer());
       },
