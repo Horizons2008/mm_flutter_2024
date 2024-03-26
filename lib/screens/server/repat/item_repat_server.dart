@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,7 @@ class ItemRepatServer extends StatelessWidget {
             ),
             context: context,
             builder: (BuildContext context) {
-              return  DetailRepatServer();
+              return DetailRepatServer();
             });
         // Get.to(() => const DetailRepatServer());
       },
@@ -92,11 +93,31 @@ class ItemRepatServer extends StatelessWidget {
             child: Container(
               height: 100,
               width: 100,
+              padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    image: AssetImage("assets/images/12.png"),
-                  ),
-                  borderRadius: BorderRadius.circular(50)),
+                color: Colors.blue,
+                border: Border.all(width: 1, color: Colors.grey),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: item.image.isNotEmpty
+                  ? CircleAvatar(
+                      child: CachedNetworkImage(
+                        progressIndicatorBuilder: (context, url, progress) =>
+                            Center(
+                          child: CircularProgressIndicator(
+                            value: progress.progress,
+                          ),
+                        ),
+                        fit: BoxFit.fill,
+                        imageUrl: baseUrl_photos + item.image,
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                    )
+                  : Image.asset(
+                      "assets/images/logo.png",
+                      fit: BoxFit.fill,
+                    ),
             ),
           ),
         ],

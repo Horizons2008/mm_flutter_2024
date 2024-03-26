@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -40,9 +41,24 @@ class ItemCatServer extends StatelessWidget {
                   width: 32,
                   height: 32,
                   margin: EdgeInsets.all(2),
+                  padding: EdgeInsets.all(3),
                   decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(40))),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(40)),
+                  ),
+                  child: item.image.isNotEmpty
+                      ? CachedNetworkImage(
+                          progressIndicatorBuilder: (context, url, progress) =>
+                              Center(
+                            child: CircularProgressIndicator(
+                              value: progress.progress,
+                            ),
+                          ),
+                          imageUrl: baseUrl_photos + item.image,
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        )
+                      : Image.asset("assets/images/logo.png"),
                 ),
                 SpaceH(w: 5),
                 CustomText(
